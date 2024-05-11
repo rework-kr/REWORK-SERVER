@@ -47,11 +47,11 @@ jacocoTestReport {
     }
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: ["com/example/rewalk/dto/**",
-                                        "com/example/rewalk/exception/**",
-                                        "com/example/rewalk/filter/**",
-                                        "com/example/rewalk/config/**",
-                                        "com/example/rewalk/handler/**"] + Qdomains)
+            fileTree(dir: it, exclude: ["com/example/Rework/dto/**",
+                                        "com/example/Rework/exception/**",
+                                        "com/example/Rework/filter/**",
+                                        "com/example/Rework/config/**",
+                                        "com/example/Rework/handler/**"] + Qdomains)
         })
         )
     }
