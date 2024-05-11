@@ -1,10 +1,10 @@
-package com.example.rewalk;
+package com.example.rework;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RewalkApplicationTests {
+class ReworkApplicationTests {
 
     @Test
     void contextLoads() {
