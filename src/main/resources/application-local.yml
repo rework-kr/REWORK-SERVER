@@ -1,0 +1,25 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/rewalk?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: false
+        default_batch_fetch_size: 1000
+      defer-datasource-initialization: true
+      show-sql: true
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
