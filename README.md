@@ -1,4 +1,6 @@
+
 # git flow role
+# Branch Naming Convention 브랜치명/이슈번호-기능명
 ![image](https://github.com/rework-kr/REWORK-SERVER/assets/79193811/b45ab380-f22a-49f0-b58a-f500abad1784)
 
 # Commit Message Convention
