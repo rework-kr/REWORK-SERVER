@@ -4,7 +4,7 @@
 ![image](https://github.com/rework-kr/REWORK-SERVER/assets/79193811/b45ab380-f22a-49f0-b58a-f500abad1784)
 
 # Commit Message Convention
-
+# [브랜치명] 간단한 내용
 ## 태그명과 설명
 ####  Feat: 새로운 기능을 추가할 때 사용합니다.
 #### Fix: 버그를 수정했을 때 사용합니다.
