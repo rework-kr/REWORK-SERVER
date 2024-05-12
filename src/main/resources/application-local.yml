@@ -22,4 +22,13 @@ spring:
       charset: UTF-8
       enabled: true
       force: true
+  #  redis configuration
+  data:
+    redis:
+      port: 6379
+      host: localhost
+
+
+jwt:
+  secret-key: mobile_app_1234567890
 
