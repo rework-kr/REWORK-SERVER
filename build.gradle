@@ -51,6 +51,7 @@ jacocoTestReport {
                                         "com/example/rework/exception/**",
                                         "com/example/rework/filter/**",
                                         "com/example/rework/config/**",
+                                        "com/example/rework/global/**",
                                         "com/example/rework/handler/**"] + Qdomains)
         })
         )
