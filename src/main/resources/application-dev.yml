@@ -4,31 +4,21 @@ spring:
       matching-strategy: ant_path_matcher
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/Rework?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
         format_sql: false
         default_batch_fetch_size: 1000
-      defer-datasource-initialization: true
-      show-sql: true
   servlet:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
-  #  redis configuration
-  data:
-    redis:
-      port: 6379
-      host: localhost
-
-
 jwt:
-  secret-key: mobile_app_1234567890
-
+  secret-key: ${JWT_SECRET_KEY}
