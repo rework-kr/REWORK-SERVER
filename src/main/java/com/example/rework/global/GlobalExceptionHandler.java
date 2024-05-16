@@ -1,9 +1,6 @@
 package com.example.rework.global;
 import com.example.rework.global.dto.CommonResponse;
-import com.example.rework.global.error.DuplicateAccountException;
-import com.example.rework.global.error.NotFoundAccountException;
-import com.example.rework.global.error.PasswordNotMatchException;
-import com.example.rework.global.error.UnAuthorizedException;
+import com.example.rework.global.error.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +30,29 @@ public class GlobalExceptionHandler {
         log.error("handleDuplicateAccountException :: ");
 
         ErrorCodes errorCode = ErrorCodes.DUPLICATE_ACCOUNT_EXCEPTION;
+
+        ErrorResponse error = ErrorResponse.builder()
+                .status(errorCode.getStatus().value())
+                .message(errorCode.getMessage())
+                .code(errorCode.getCode())
+                .build();
+
+        CommonResponse response = CommonResponse.builder()
+                .success(false)
+                .error(error)
+                .build();
+
+        return new ResponseEntity<>(response, errorCode.getStatus());
+    }
+
+    /**
+     * discord 전송 오류
+     */
+    @ExceptionHandler(InvalidDiscordMessage.class)
+    protected ResponseEntity<?> invalidDiscordMessage(InvalidDiscordMessage ex) {
+        log.error("InvalidDiscordMessage :: ");
+
+        ErrorCodes errorCode = ErrorCodes.INVALID_DISCORD_MESSAGE;
 
         ErrorResponse error = ErrorResponse.builder()
                 .status(errorCode.getStatus().value())
