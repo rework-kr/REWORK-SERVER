@@ -15,8 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -31,14 +31,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.io.PrintWriter;
 
 @Configuration
-@EnableMethodSecurity
 @RequiredArgsConstructor
+@EnableWebSecurity
 public class SecurityConfig {
     private final JwtProvider jwtProvider;
     private final MemberService memberService;
     private final RefreshTokenService refreshTokenService;
     private final AuthenticationConfiguration authenticationConfiguration;
-
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -54,6 +53,7 @@ public class SecurityConfig {
                         headerConfig.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable
                         )
                 ).formLogin(AbstractHttpConfigurer::disable) // 2번
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -63,10 +63,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
                                 .requestMatchers("/api/v1/members/signup", "/api/v1/members/login/**","/api/v1/members/renew-access-token","/api/v1/members/logout").permitAll()
-                                .requestMatchers("/swagger-ui/**").permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
-                                .requestMatchers("/v3/api-docs/**").permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
-//                                .requestMatchers("/posts/**", "/api/v1/posts/**").hasRole(MemberRole.MEMBER.name())
-//                                .requestMatchers("/admins/**", "/api/v1/admins/**").hasRole(MemberRole.MEMBER.name())
+                                .requestMatchers("/api/v1/mails/send/**").hasAuthority("ADMIN")
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling((exceptionConfig) ->

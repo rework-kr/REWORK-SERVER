@@ -2,6 +2,10 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:/db/data.sql
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/Rework?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
@@ -9,7 +13,7 @@ spring:
     password:
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
@@ -17,6 +21,17 @@ spring:
         default_batch_fetch_size: 1000
       defer-datasource-initialization: true
       show-sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${email_username}
+    password: ${email_password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   servlet:
     encoding:
       charset: UTF-8
@@ -28,7 +43,9 @@ spring:
       port: 6379
       host: localhost
 
-
+discord:
+  webhook:
+    url: ${discord_webhook_url}
 jwt:
   secret-key: mobile_app_1234567890
 

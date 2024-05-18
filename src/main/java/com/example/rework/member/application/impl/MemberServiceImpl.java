@@ -8,17 +8,16 @@ import com.example.rework.global.error.DuplicateAccountException;
 import com.example.rework.global.error.InvalidTokenException;
 import com.example.rework.member.application.MemberService;
 import com.example.rework.member.application.dto.MemberResponseDto;
-import com.example.rework.member.application.dto.MemeberRequestDto;
+import com.example.rework.member.application.dto.MemeberRequestDto.SignUpRequestDto;
 import com.example.rework.member.domain.Member;
 import com.example.rework.member.domain.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional(readOnly = true)
@@ -33,11 +32,11 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public MemberResponseDto.MemberCreateResponseDto createMember(MemeberRequestDto.SignUpRequestDto signUpRequestDto) {
+    public MemberResponseDto.MemberCreateResponseDto createMember(SignUpRequestDto signUpRequestDto) {
         //중복체크검사
         signupVaidate(signUpRequestDto);
         //패스워드 인코딩
-        MemeberRequestDto.SignUpRequestDto encodingDto = encodingPassword(signUpRequestDto);
+        SignUpRequestDto encodingDto = encodingPassword(signUpRequestDto);
         //회원 저장
         Member member = memberRepository.save(encodingDto.toEntity());
         return MemberResponseDto.MemberCreateResponseDto.builder()
@@ -81,7 +80,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 패스워드 암호화
      */
-    private MemeberRequestDto.SignUpRequestDto encodingPassword(MemeberRequestDto.SignUpRequestDto signUpRequestDto){
+    private SignUpRequestDto encodingPassword(SignUpRequestDto signUpRequestDto){
         final String password=signUpRequestDto.getPassword();
         signUpRequestDto.setPassword(bCryptPasswordEncoder.encode(password));
         return signUpRequestDto;
@@ -90,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 회원유효성검증
      */
-    private void signupVaidate(MemeberRequestDto.SignUpRequestDto signUpRequestDto){
+    private void signupVaidate(SignUpRequestDto signUpRequestDto){
         String userId = signUpRequestDto.getUserId();
         if (memberRepository.existsByUserId(userId)) {
             throw new DuplicateAccountException("아이디 중복");

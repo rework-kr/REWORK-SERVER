@@ -1,16 +1,13 @@
 package com.example.rework.member.restapi;
 
 import com.example.rework.global.common.CommonResDto;
-import com.example.rework.member.application.dto.MemeberRequestDto.SignUpRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,18 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/members")
 public interface MemberApi {
 
-    @Operation(
-            summary = "회원 생성",
-            description =
-                    "회원 정보를 받아 회원가입을 하는 API\n"
-                            + "회원가입 성공 시 201 Created 반환"
-    )
-    @PostMapping("/signup")
-    ResponseEntity<CommonResDto<?>> memberSignUp(
-            @Valid
-            @RequestBody
-            SignUpRequestDto signUpRequestDto
-    );
+
+    //TODO 일단 회원가입은 관리자만할 수 있으니 TODO 처리
+//    @Operation(
+//            summary = "회원 생성",
+//            description =
+//                    "회원 정보를 받아 회원가입을 하는 API\n"
+//                            + "회원가입 성공 시 201 Created 반환"
+//    )
+//    @PostMapping("/signup")
+//    ResponseEntity<CommonResDto<?>> memberSignUp(
+//            @Valid
+//            @RequestBody
+//            SignUpRequestDto signUpRequestDto
+//    );
 
     @Operation(
             summary = "회원 accessToken 재발급 요청",

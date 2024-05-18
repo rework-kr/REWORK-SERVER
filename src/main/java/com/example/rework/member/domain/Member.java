@@ -32,6 +32,7 @@ public class Member extends BaseTimeEntity {
     @Column(length = 30,nullable = false)
     private String name;
     @Column(length = 30,nullable = false)
+    @Enumerated(EnumType.STRING)
     private MemberRole role; // ADMIN 관리자 - MANAGER 운영자 - MEMBER 일반회원
     @Column(length = 30,nullable = false)
     private boolean state;

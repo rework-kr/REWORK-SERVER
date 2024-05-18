@@ -63,43 +63,44 @@ class MemberControllerTest extends ControllerTestSupport {
         memberRepository.deleteAllInBatch();
     }
 
-    @DisplayName("유저는 회원가입을 할 수 있다.")
-    @Test
-    void memberSignupTest() throws Exception {
-        // given
-
-        String url = "/api/v1/members/signup";
-
-        SignUpRequestDto signUpRequestDto = MemberFixture.createMember("kbsserver2@naver.com");
-
-        //when //then
-        MvcResult mvcResult = mockMvc.perform(post(url)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding(StandardCharsets.UTF_8)
-                        .content(objectMapper.writeValueAsString(signUpRequestDto))
-                )
-                .andDo(print())
-                .andExpect(status().isCreated())
-                .andReturn();
-    }
-
-    @DisplayName("이미 가입된 id는 회원가입을 할 수 없다.")
-    @Test
-    void createMemberWithSameID() throws Exception {
-        // Given
-        SignUpRequestDto signUpRequestDto = MemberFixture.createMember("kbsserver@naver.com");
-        String url = "/api/v1/members/signup";
-
-        //when //then
-        MvcResult mvcResult = mockMvc.perform(post(url)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding(StandardCharsets.UTF_8)
-                        .content(objectMapper.writeValueAsString(signUpRequestDto))
-                )
-                .andDo(print())
-                .andExpect(status().isConflict())
-                .andReturn();
-    }
+    //TODO 유저가 회원가입하는 기능은 빠져서 주석처리
+//    @DisplayName("유저는 회원가입을 할 수 있다.")
+//    @Test
+//    void memberSignupTest() throws Exception {
+//        // given
+//
+//        String url = "/api/v1/members/signup";
+//
+//        SignUpRequestDto signUpRequestDto = MemberFixture.createMember("kbsserver2@naver.com");
+//
+//        //when //then
+//        MvcResult mvcResult = mockMvc.perform(post(url)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .characterEncoding(StandardCharsets.UTF_8)
+//                        .content(objectMapper.writeValueAsString(signUpRequestDto))
+//                )
+//                .andDo(print())
+//                .andExpect(status().isCreated())
+//                .andReturn();
+//    }
+//
+//    @DisplayName("이미 가입된 id는 회원가입을 할 수 없다.")
+//    @Test
+//    void createMemberWithSameID() throws Exception {
+//        // Given
+//        SignUpRequestDto signUpRequestDto = MemberFixture.createMember("kbsserver@naver.com");
+//        String url = "/api/v1/members/signup";
+//
+//        //when //then
+//        MvcResult mvcResult = mockMvc.perform(post(url)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .characterEncoding(StandardCharsets.UTF_8)
+//                        .content(objectMapper.writeValueAsString(signUpRequestDto))
+//                )
+//                .andDo(print())
+//                .andExpect(status().isConflict())
+//                .andReturn();
+//    }
 
     @DisplayName("회원가입한 사용자는 로그인을 할 수 있다.")
     @Test
