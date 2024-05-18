@@ -64,7 +64,6 @@ jacocoTestReport {
 repositories {
     mavenCentral()
 }
-
 dependencies {
     runtimeOnly 'com.h2database:h2'
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -98,6 +97,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     // embedded redis config
     implementation("it.ozimov:embedded-redis:0.7.2")
+    //email
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    //thmeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
     // -- QueryDSL ---
     implementation 'org.projectlombok:lombok:1.18.22'

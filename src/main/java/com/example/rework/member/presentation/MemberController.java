@@ -6,9 +6,12 @@ import com.example.rework.auth.service.RefreshTokenService;
 import com.example.rework.global.common.CommonResDto;
 import com.example.rework.global.error.InvalidTokenException;
 import com.example.rework.member.application.MemberService;
-import com.example.rework.member.application.dto.MemberResponseDto;
 import com.example.rework.member.application.dto.MemeberRequestDto;
 import com.example.rework.member.restapi.MemberApi;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,10 +20,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/v1/members")
@@ -31,11 +30,13 @@ public class MemberController implements MemberApi {
     private final MemberService memberService;
     private final JwtProvider jwtProvider;
     private final RefreshTokenService refreshTokenService;
-    @Override
-    public ResponseEntity<CommonResDto<?>> memberSignUp(MemeberRequestDto.SignUpRequestDto signUpRequestDto) {
-        MemberResponseDto.MemberCreateResponseDto result = memberService.createMember(signUpRequestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new CommonResDto<>(1,"회원 등록에 성공하였습니다.",result));
-    }
+
+    //TODO 일단 회원가입은 관리자만할 수 있으니 TODO 처리
+//    @Override
+//    public ResponseEntity<CommonResDto<?>> memberSignUp(MemeberRequestDto.SignUpRequestDto signUpRequestDto) {
+//        MemberResponseDto.MemberCreateResponseDto result = memberService.createMember(signUpRequestDto);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(new CommonResDto<>(1,"회원 등록에 성공하였습니다.",result));
+//    }
 
     @PostMapping("/renew-access-token")
     public ResponseEntity renewAccessToken(
