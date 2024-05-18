@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
      * Handle SQL exceptions
      */
     @ExceptionHandler({DataAccessException.class, SQLException.class})
-    protected ResponseEntity<CommonResponse> handleSqlException(Exception ex) {
+    protected ResponseEntity<?> handleSqlException(Exception ex) {
         log.error("SQL Exception occurred: {}", ex.getMessage());
 
         ErrorCodes errorCode = ErrorCodes.DATABASE_VALIDATION_ERROR;
@@ -119,7 +119,7 @@ public class GlobalExceptionHandler {
      * 리퀘스트 파라미터 바인딩이 실패했을때
      */
     @ExceptionHandler(BindException.class)
-    protected ResponseEntity<CommonResponse> handleRequestParameterBindException(BindException ex) {
+    protected ResponseEntity<?> handleRequestParameterBindException(BindException ex) {
         log.error("handleRequestParameterBindException :: ");
 
         ErrorCodes errorCode = ErrorCodes.REQUEST_PARAMETER_BIND_EXCEPTION;
@@ -142,7 +142,7 @@ public class GlobalExceptionHandler {
      * 사용자 인증이 실패했을때
      */
     @ExceptionHandler(AuthenticationException.class)
-    protected ResponseEntity<CommonResponse> handleAuthenticationException() {
+    protected ResponseEntity<?> handleAuthenticationException() {
         log.error("AuthenticationException :: ");
         ErrorCodes errorCode = ErrorCodes.AUTHENTICATION_FAILED_EXCEPTION;
 
@@ -164,7 +164,7 @@ public class GlobalExceptionHandler {
      * 비밀번호가 일치않았을 때
      */
     @ExceptionHandler(PasswordNotMatchException.class)
-    protected ResponseEntity<CommonResponse> PasswordNotMatchException() {
+    protected ResponseEntity<?> PasswordNotMatchException() {
         log.error("PasswordNotMatchException :: ");
         ErrorCodes errorCode = ErrorCodes.PASSWORD_NOT_MATCH;
 
@@ -188,7 +188,7 @@ public class GlobalExceptionHandler {
      * 계정을 찿을 수 없을 때
      */
     @ExceptionHandler(NotFoundAccountException.class)
-    protected ResponseEntity<CommonResponse> handleNotFoundAccountException(NotFoundAccountException ex) {
+    protected ResponseEntity<?> handleNotFoundAccountException(NotFoundAccountException ex) {
 
         log.error("handleNotFoundAccountException");
         ErrorCodes errorCode = ErrorCodes.NOT_FOUND_ACCOUNT_EXCEPTION;
