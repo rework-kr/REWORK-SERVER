@@ -14,7 +14,7 @@ public class SecurityUtils {
 
     private static List<SimpleGrantedAuthority> notUserAuthority = List.of(admin);
 
-    public static Long getCurrentUserId() {
+    public static String getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             throw new UsernameNotFoundException("유저를 찾을 수 없습니다");
@@ -23,9 +23,9 @@ public class SecurityUtils {
         if (authentication.isAuthenticated()
                 && !CollectionUtils.containsAny(
                 authentication.getAuthorities(), notUserAuthority)) {
-            return Long.valueOf(authentication.getName());
+            return authentication.getName();
         }
         // admin 유저일시 유저 아이디 0 반환
-        return 0L;
+        return "0";
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
-import static com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaRequestDto.*;
+import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaRequestDto.*;
 
 @Tag(name = "이번달 아젠다 API", description = "이번달 아젠다 관련 API")
 @RestController
@@ -21,11 +21,11 @@ public interface MonthlyAgendaApi {
 
     @Operation(
             summary = "이번달 아젠다 조회",
-            description = "사용자 정보를 받아 해당하는 달의 '이번달 아젠다를' 조회하는 API"
+            description = "사용자 정보와 연,월을 받아 해당하는 달의 '이번달 아젠다를' 조회하는 API"
     )
-    @GetMapping("/read/{date}")
+    @GetMapping("/read")
     ResponseEntity<CommonResDto<?>> readMonthlyAgenda(
-            @PathVariable String date,
+            @RequestBody ReadMonthlyAgendaRequestDto readMonthlyAgendaRequestDto,
             SecurityUtils securityUtils
     );
 

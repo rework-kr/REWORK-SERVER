@@ -1,7 +1,7 @@
 package com.example.rework.MonthlyAgenda.presentation;
 
 import com.example.rework.MonthlyAgenda.application.MonthlyAgendaService;
-import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaRequestDto;
+import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaRequestDto.*;
 import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaResponseDto;
 import com.example.rework.MonthlyAgenda.restapi.MonthlyAgendaApi;
 import com.example.rework.config.security.SecurityUtils;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/monthlyAgenda")
@@ -23,26 +22,26 @@ public class MonthlyAgendaController implements MonthlyAgendaApi {
     private final MonthlyAgendaService monthlyAgendaService;
 
     @Override
-    public ResponseEntity<CommonResDto<?>> readMonthlyAgenda(String date, SecurityUtils securityUtils) {
-        MonthlyAgendaResponseDto.ReadMonthlyAgendaResponseDto result = monthlyAgendaService.readMonthlyAgenda(date, securityUtils.getCurrentUserId());
+    public ResponseEntity<CommonResDto<?>> readMonthlyAgenda(ReadMonthlyAgendaRequestDto readMonthlyAgendaRequestDto, SecurityUtils securityUtils) {
+        MonthlyAgendaResponseDto.ReadMonthlyAgendaResponseDto result = monthlyAgendaService.readMonthlyAgenda(readMonthlyAgendaRequestDto, securityUtils);
         return ResponseEntity.status(HttpStatus.OK).body(new CommonResDto<>(1, "이번달 아젠다 조회에 성고했습니다.", result));
     }
 
     @Override
-    public ResponseEntity<CommonResDto<?>> createMonthlyAgenda(MonthlyAgendaRequestDto.CreateMonthlyAgendaRequestDto createMonthlyAgendaRequestDto, SecurityUtils securityUtils) {
-        MonthlyAgendaResponseDto.CreateMonthlyAgendaResponseDto result = monthlyAgendaService.createMonthlyAgenda(createMonthlyAgendaRequestDto, securityUtils.getCurrentUserId());
+    public ResponseEntity<CommonResDto<?>> createMonthlyAgenda(CreateMonthlyAgendaRequestDto createMonthlyAgendaRequestDto, SecurityUtils securityUtils) {
+        MonthlyAgendaResponseDto.CreateMonthlyAgendaResponseDto result = monthlyAgendaService.createMonthlyAgenda(createMonthlyAgendaRequestDto, securityUtils);
         return ResponseEntity.status(HttpStatus.CREATED).body(new CommonResDto<>(1, "이번달 아젠다 생성에 성공했습니다.", result));
     }
 
     @Override
-    public ResponseEntity<CommonResDto<?>> updateMonthlyAgenda(MonthlyAgendaRequestDto.UpdateMonthlyAgendaRequestDto updateMonthlyAgendaRequestDto, SecurityUtils securityUtils) {
-        MonthlyAgendaResponseDto.UpdateMonthlyAgendaResponseDto result = monthlyAgendaService.updateMonthlyAgenda(updateMonthlyAgendaRequestDto, securityUtils.getCurrentUserId());
+    public ResponseEntity<CommonResDto<?>> updateMonthlyAgenda(UpdateMonthlyAgendaRequestDto updateMonthlyAgendaRequestDto, SecurityUtils securityUtils) {
+        MonthlyAgendaResponseDto.UpdateMonthlyAgendaResponseDto result = monthlyAgendaService.updateMonthlyAgenda(updateMonthlyAgendaRequestDto, securityUtils);
         return ResponseEntity.status(HttpStatus.OK).body(new CommonResDto<>(1, "이번달 아젠달 수정에 성공했습니다.", result));
     }
 
     @Override
     public ResponseEntity<CommonResDto<?>> deleteMonthlyAgenda(Long monthlyAgendaId, SecurityUtils securityUtils) {
-        boolean result = monthlyAgendaService.deleteMonthlyAgenda(monthlyAgendaId, securityUtils.getCurrentUserId());
+        boolean result = monthlyAgendaService.deleteMonthlyAgenda(monthlyAgendaId, securityUtils);
         return ResponseEntity.status(HttpStatus.OK).body(new CommonResDto<>(1, "이번달 아젠다 삭제에 성공했습니다.", result));
     }
 

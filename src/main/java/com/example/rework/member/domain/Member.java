@@ -37,6 +37,4 @@ public class Member extends BaseTimeEntity {
     @Column(length = 30,nullable = false)
     private boolean state;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<MonthlyAgenda> monthlyAgendaList = new ArrayList<>();
 }
