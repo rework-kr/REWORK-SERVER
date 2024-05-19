@@ -24,4 +24,7 @@ public class MonthlyAgenda extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
+    public void setTodo(String todo) {
+        this.todo = todo;
+    }
 }

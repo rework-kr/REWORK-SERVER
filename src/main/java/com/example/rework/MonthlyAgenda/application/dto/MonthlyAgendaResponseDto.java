@@ -10,26 +10,31 @@ public class MonthlyAgendaResponseDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     @Builder
-    public static class CreateMonthlyAgendaResponseDto{
-
-    }
-
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    @AllArgsConstructor
-    @Builder
-    public static class UpdateMonthlyAgendaResponseDto{
-
-    }
-
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    @AllArgsConstructor
-    @Builder
-    public static class ReadMonthlyAgendaResponseDto{
+    public static class CreateMonthlyAgendaResponseDto {
+        private Long agendaId;
         private String todo;
         private boolean state;
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm")
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    @Builder
+    public static class UpdateMonthlyAgendaResponseDto {
+        private Long agendaId;
+        private String todo;
+        private boolean state;
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    @Builder
+    public static class ReadMonthlyAgendaResponseDto {
+        private Long agendaId;
+        private String todo;
+        private boolean state;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM")
         private LocalDateTime createTime;
     }
 }
