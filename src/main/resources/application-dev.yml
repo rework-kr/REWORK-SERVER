@@ -2,6 +2,10 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:/db/data.sql
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${SPRING_DATASOURCE_URL}
@@ -15,10 +19,32 @@ spring:
         show_sql: true
         format_sql: false
         default_batch_fetch_size: 1000
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   servlet:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
+    #  redis configuration
+  data:
+    redis:
+      port: 6379
+      host: ${REDIS_HOST}
+
+discord:
+  webhook:
+    url: ${DISCORD_WEBHOOK_URL}
 jwt:
   secret-key: ${JWT_SECRET_KEY}
+

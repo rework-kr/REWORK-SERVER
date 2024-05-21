@@ -142,9 +142,9 @@ pipeline {
                 script {
                     docker.withRegistry('', registryCredential) {
                         sshagent (credentials: ['ssh']) {
-                            sh "ssh -o StrictHostKeyChecking=no ubuntu@43.200.143.218 'cd rework && sed -i \"s/^BUILD_NUMBER=.*/BUILD_NUMBER=${BUILD_NUMBER}/\" .env'"
-                            sh "ssh -o StrictHostKeyChecking=no ubuntu@43.200.143.218 'cd rework && ./deploy.sh'"
-                            sh "ssh -o StrictHostKeyChecking=no ubuntu@43.200.143.218 'docker image prune -f --all'"
+                            sh "ssh -o StrictHostKeyChecking=no ubuntu@43.202.187.4 'cd rework && sed -i \"s/^BUILD_NUMBER=.*/BUILD_NUMBER=${BUILD_NUMBER}/\" .env'"
+                            sh "ssh -o StrictHostKeyChecking=no ubuntu@43.202.187.4 'cd rework && ./deploy.sh'"
+                            sh "ssh -o StrictHostKeyChecking=no ubuntu@43.202.187.4 'docker image prune -f --all'"
                         }
                     }
                 }
