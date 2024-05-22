@@ -71,12 +71,12 @@ public class MonthlyAgendaServiceImpl implements MonthlyAgendaService {
                 .state(false)
                 .build();
 
-        monthlyAgendaRepository.save(monthlyAgenda);
+        MonthlyAgenda returnMonthlyAgenda = monthlyAgendaRepository.save(monthlyAgenda);
 
         return MonthlyAgendaResponseDto.CreateMonthlyAgendaResponseDto.builder()
-                .agendaId(monthlyAgenda.getId())
-                .todo(monthlyAgenda.getTodo())
-                .state(monthlyAgenda.isState())
+                .agendaId(returnMonthlyAgenda.getId())
+                .todo(returnMonthlyAgenda.getTodo())
+                .state(returnMonthlyAgenda.isState())
                 .build();
     }
 

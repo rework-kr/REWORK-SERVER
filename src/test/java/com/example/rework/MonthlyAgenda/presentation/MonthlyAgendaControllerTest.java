@@ -1,4 +1,4 @@
-package com.example.rework.MonthlyAgenda.presentation;
+package com.example.rework.monthlyagenda.presentation;
 
 import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaRequestDto;
 import com.example.rework.MonthlyAgenda.domain.MonthlyAgenda;
