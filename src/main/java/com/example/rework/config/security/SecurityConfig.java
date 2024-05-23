@@ -63,7 +63,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
                                 .requestMatchers("/api/v1/members/signup", "/api/v1/members/login/**","/api/v1/members/renew-access-token","/api/v1/members/logout").permitAll()
-                                .requestMatchers("/api/v1/monthlyAgenda/**").permitAll()
+                                .requestMatchers("/api/v1/monthlyAgenda/**").hasAnyAuthority("ADMIN", "MEMBER")
                                 .requestMatchers("/api/v1/mails/send/**").hasAuthority("ADMIN")
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
