@@ -1,13 +1,16 @@
 package com.example.rework.member.restapi;
 
 import com.example.rework.global.common.CommonResDto;
+import com.example.rework.member.application.dto.MemeberRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,7 +32,7 @@ public interface MemberApi {
 //    ResponseEntity<CommonResDto<?>> memberSignUp(
 //            @Valid
 //            @RequestBody
-//            SignUpRequestDto signUpRequestDto
+//            MemeberRequestDto.SignUpRequestDto signUpRequestDto
 //    );
 
     @Operation(

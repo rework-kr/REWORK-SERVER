@@ -6,6 +6,7 @@ import com.example.rework.auth.service.RefreshTokenService;
 import com.example.rework.global.common.CommonResDto;
 import com.example.rework.global.error.InvalidTokenException;
 import com.example.rework.member.application.MemberService;
+import com.example.rework.member.application.dto.MemberResponseDto;
 import com.example.rework.member.application.dto.MemeberRequestDto;
 import com.example.rework.member.restapi.MemberApi;
 import jakarta.servlet.http.HttpServletRequest;

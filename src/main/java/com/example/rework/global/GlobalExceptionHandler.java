@@ -1,4 +1,5 @@
 package com.example.rework.global;
+
 import com.example.rework.global.dto.CommonResponse;
 import com.example.rework.global.error.*;
 import lombok.extern.slf4j.Slf4j;
@@ -92,8 +93,6 @@ public class GlobalExceptionHandler {
     }
 
 
-
-
     @ExceptionHandler(UnAuthorizedException.class)
     protected ResponseEntity<?> handleUnAuthorizedException(UnAuthorizedException ex) {
         log.error("handleUnAuthorizedException :: ");
@@ -112,7 +111,6 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, errorCode.getStatus());
     }
-
 
 
     /**
@@ -183,7 +181,6 @@ public class GlobalExceptionHandler {
     }
 
 
-
     /**
      * 계정을 찿을 수 없을 때
      */
@@ -208,11 +205,10 @@ public class GlobalExceptionHandler {
 
 
     /**
-     *
      * 유효성검사에 실패하는
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<?> argumentNotValidException(BindingResult bindingResult,MethodArgumentNotValidException ex) {
+    protected ResponseEntity<?> argumentNotValidException(BindingResult bindingResult, MethodArgumentNotValidException ex) {
         log.error("argumentNotValidException :: ");
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         ErrorCodes errorCode = ErrorCodes.REQUEST_PARAMETER_BIND_EXCEPTION;
@@ -237,7 +233,7 @@ public class GlobalExceptionHandler {
 
 
     /**
-     *  주로 파일 업로드나 멀티파트 요청에서 파트나 매개변수가 누락된 경우에 해당 예외
+     * 주로 파일 업로드나 멀티파트 요청에서 파트나 매개변수가 누락된 경우에 해당 예외
      */
 
     @ExceptionHandler(MissingServletRequestPartException.class)
@@ -245,13 +241,35 @@ public class GlobalExceptionHandler {
         log.error("MissingServletRequestPartException = {}", exception);
         return ResponseEntity.badRequest().body("MissingServletRequestPartException");
     }
+
     /**
-     *
      * 유효성검사 타입 불일치
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<?> methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
         log.error("MethodArgumentTypeMismatchException = {}", exception);
         return ResponseEntity.badRequest().body("잘못된 형식의 값입니다.");
+    }
+
+    /**
+     * 아젠다를 찿을 수 없을 때
+     */
+    @ExceptionHandler(NotFoundAgendaException.class)
+    protected ResponseEntity<?> handleNotFoundAgendaException(NotFoundAgendaException ex) {
+
+        log.error("handleNotFoundAgendaException");
+        ErrorCodes errorCode = ErrorCodes.NOT_FOUND_MONTHLY_AGENDA_EXCEPTION;
+        ErrorResponse error = ErrorResponse.builder()
+                .status(errorCode.getStatus().value())
+                .message(errorCode.getMessage())
+                .code(errorCode.getCode())
+                .build();
+
+        CommonResponse response = CommonResponse.builder()
+                .success(false)
+                .error(error)
+                .build();
+
+        return new ResponseEntity<>(response, errorCode.getStatus());
     }
 }
