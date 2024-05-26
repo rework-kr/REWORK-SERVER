@@ -1,12 +1,12 @@
-package com.example.rework.MonthlyAgenda.application.impl;
+package com.example.rework.monthlyagenda.application.impl;
 
-import com.example.rework.MonthlyAgenda.application.MonthlyAgendaService;
-import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaRequestDto.CreateMonthlyAgendaRequestDto;
-import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaRequestDto.ReadMonthlyAgendaRequestDto;
-import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaRequestDto.UpdateMonthlyAgendaRequestDto;
-import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaResponseDto;
-import com.example.rework.MonthlyAgenda.domain.MonthlyAgenda;
-import com.example.rework.MonthlyAgenda.domain.repository.MonthlyAgendaRepository;
+import com.example.rework.monthlyagenda.application.MonthlyAgendaService;
+import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaRequestDto.CreateMonthlyAgendaRequestDto;
+import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaRequestDto.ReadMonthlyAgendaRequestDto;
+import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaRequestDto.UpdateMonthlyAgendaRequestDto;
+import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaResponseDto;
+import com.example.rework.monthlyagenda.domain.MonthlyAgenda;
+import com.example.rework.monthlyagenda.domain.repository.MonthlyAgendaRepository;
 import com.example.rework.config.security.SecurityUtils;
 import com.example.rework.global.error.NotFoundAccountException;
 import com.example.rework.global.error.NotFoundAgendaException;
@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.util.List;
 import java.util.Optional;
 
 @Service

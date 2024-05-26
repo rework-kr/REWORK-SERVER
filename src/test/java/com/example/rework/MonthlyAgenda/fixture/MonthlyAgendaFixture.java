@@ -1,6 +1,6 @@
-package com.example.rework.MonthlyAgenda.fixture;
+package com.example.rework.monthlyagenda.fixture;
 
-import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaRequestDto;
+import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaRequestDto;
 
 public class MonthlyAgendaFixture {
     public static MonthlyAgendaRequestDto.CreateMonthlyAgendaRequestDto createAgenda(){

@@ -1,6 +1,6 @@
 package com.example.rework.util;
 
-import com.example.rework.MonthlyAgenda.domain.repository.MonthlyAgendaRepository;
+import com.example.rework.monthlyagenda.domain.repository.MonthlyAgendaRepository;
 import com.example.rework.member.domain.repository.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;

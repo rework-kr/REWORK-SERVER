@@ -1,4 +1,4 @@
-package com.example.rework.MonthlyAgenda.domain;
+package com.example.rework.monthlyagenda.domain;
 
 import com.example.rework.global.base.BaseTimeEntity;
 import com.example.rework.member.domain.Member;
