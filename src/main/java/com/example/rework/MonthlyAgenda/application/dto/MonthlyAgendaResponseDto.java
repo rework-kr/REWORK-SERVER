@@ -1,4 +1,4 @@
-package com.example.rework.MonthlyAgenda.application.dto;
+package com.example.rework.monthlyagenda.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;

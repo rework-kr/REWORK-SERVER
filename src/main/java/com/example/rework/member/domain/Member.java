@@ -1,7 +1,6 @@
 package com.example.rework.member.domain;
 
 
-import com.example.rework.MonthlyAgenda.domain.MonthlyAgenda;
 import com.example.rework.auth.MemberRole;
 import com.example.rework.global.base.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -10,9 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity(name = "MEMBER")

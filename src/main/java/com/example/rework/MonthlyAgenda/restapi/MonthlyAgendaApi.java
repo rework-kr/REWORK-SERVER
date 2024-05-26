@@ -1,4 +1,4 @@
-package com.example.rework.MonthlyAgenda.restapi;
+package com.example.rework.monthlyagenda.restapi;
 
 import com.example.rework.config.security.SecurityUtils;
 import com.example.rework.global.common.CommonResDto;
@@ -9,9 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
-import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaRequestDto.*;
+import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaRequestDto.*;
 
 @Tag(name = "이번달 아젠다 API", description = "이번달 아젠다 관련 API")
 @RestController

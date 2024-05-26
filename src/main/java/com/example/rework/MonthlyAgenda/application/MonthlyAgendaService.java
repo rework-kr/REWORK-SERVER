@@ -1,7 +1,7 @@
-package com.example.rework.MonthlyAgenda.application;
+package com.example.rework.monthlyagenda.application;
 
-import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaRequestDto;
-import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaResponseDto;
+import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaRequestDto;
+import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaResponseDto;
 import com.example.rework.config.security.SecurityUtils;
 
 public interface MonthlyAgendaService {

@@ -1,10 +1,9 @@
 package com.example.rework.monthlyagenda.application.impl;
 
-import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaRequestDto;
-import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaResponseDto;
-import com.example.rework.MonthlyAgenda.application.impl.MonthlyAgendaServiceImpl;
-import com.example.rework.MonthlyAgenda.domain.MonthlyAgenda;
-import com.example.rework.MonthlyAgenda.domain.repository.MonthlyAgendaRepository;
+import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaRequestDto;
+import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaResponseDto;
+import com.example.rework.monthlyagenda.domain.MonthlyAgenda;
+import com.example.rework.monthlyagenda.domain.repository.MonthlyAgendaRepository;
 import com.example.rework.auth.MemberRole;
 import com.example.rework.auth.jwt.MemberDetails;
 import com.example.rework.config.security.SecurityUtils;
@@ -22,11 +21,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.time.LocalDateTime;
-import java.time.YearMonth;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
