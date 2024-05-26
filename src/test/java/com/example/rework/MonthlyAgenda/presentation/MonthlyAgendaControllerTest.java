@@ -1,8 +1,8 @@
 package com.example.rework.monthlyagenda.presentation;
 
-import com.example.rework.MonthlyAgenda.application.dto.MonthlyAgendaRequestDto;
-import com.example.rework.MonthlyAgenda.domain.MonthlyAgenda;
-import com.example.rework.MonthlyAgenda.fixture.MonthlyAgendaFixture;
+import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaRequestDto;
+import com.example.rework.monthlyagenda.domain.MonthlyAgenda;
+import com.example.rework.monthlyagenda.fixture.MonthlyAgendaFixture;
 import com.example.rework.auth.MemberRole;
 import com.example.rework.member.domain.Member;
 import com.example.rework.util.ControllerTestSupport;
@@ -12,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -48,10 +50,10 @@ public class MonthlyAgendaControllerTest extends ControllerTestSupport {
 
     @DisplayName("회원은 이번달 아젠다를 생성할 수 있다. (토큰 필수)")
     @Test
-    @WithMockUser(username = "kbsserver@naver.com", roles = {"MEMBER"})
+    @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
     void createTodo() throws Exception {
         //given
-        String url = "/api/v1/monthlyAgenda/create";
+        String url = "/api/v1/monthlyAgenda/";
         MonthlyAgendaRequestDto.CreateMonthlyAgendaRequestDto createMonthlyAgendaRequestDto = MonthlyAgendaFixture.createAgenda();
 
         //when
@@ -84,10 +86,10 @@ public class MonthlyAgendaControllerTest extends ControllerTestSupport {
 
     @DisplayName("회원은 이번달 아젠다를 조회할 수 있다. (토큰 필수)")
     @Test
-    @WithMockUser(username = "kbsserver@naver.com", roles = {"MEMBER"})
+    @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
     void readTodo() throws Exception {
         //given
-        String url = "/api/v1/monthlyAgenda/read";
+        String url = "/api/v1/monthlyAgenda/";
 
         MonthlyAgendaRequestDto.ReadMonthlyAgendaRequestDto readMonthlyAgendaRequestDto = MonthlyAgendaFixture.readAgenda();
 
@@ -124,10 +126,10 @@ public class MonthlyAgendaControllerTest extends ControllerTestSupport {
 
     @DisplayName("회원은 이번달 아젠다를 수정할 수 있다. (토큰 필수)")
     @Test
-    @WithMockUser(username = "kbsserver@naver.com", roles = {"MEMBER"})
+    @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
     void updateTodo() throws Exception {
         //given
-        String url = "/api/v1/monthlyAgenda/update";
+        String url = "/api/v1/monthlyAgenda/";
 
         MonthlyAgendaRequestDto.UpdateMonthlyAgendaRequestDto updateMonthlyAgendaRequestDto = MonthlyAgendaFixture.updateAgenda(monthlyAgendaId);
 
@@ -161,10 +163,10 @@ public class MonthlyAgendaControllerTest extends ControllerTestSupport {
 
     @DisplayName("회원은 이번달 아젠다를 삭제할 수 있다. (토큰 필수)")
     @Test
-    @WithMockUser(username = "kbsserver@naver.com", roles = {"MEMBER"})
+    @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
     void deleteTodo() throws Exception {
         //given
-        String url = "/api/v1/monthlyAgenda/delete?monthlyAgendaId=" + monthlyAgendaId;
+        String url = "/api/v1/monthlyAgenda/?monthlyAgendaId=" + monthlyAgendaId;
 
         //when
         MvcResult mvcResult = mockMvc.perform(delete(url)
