@@ -26,7 +26,7 @@ public class MailSenderApi {
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
         helper.setTo(email);
-        helper.setSubject("플로우 빗 인증메일");
+        helper.setSubject("Rework 인증메일");
 
         //템플릿에 전달할 데이터 설정
         Context context = new Context();
