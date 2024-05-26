@@ -50,11 +50,13 @@ jobs:
       run: docker push ${{ env.DOCKER_IMAGE_TAG }}
 
     # 7. 서버에 접속하여 스크립트 실행
-    - name: Execute deploy script on remote server
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      run: |
-        mkdir -p ~/.ssh
-        echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@43.202.187.4 'bash -s' < /rework/.deploy.sh
+    - name: Deploy to Prod Server
+      uses: appleboy/ssh-action@v1.0.3
+      if: contains(github.ref, 'develop')
+      with:
+        host: ${{ secrets.MAIN_HOST }}
+        username: ${{ secrets.MAIN_USERNAME }}
+        key: ${{ secrets.MAIN_SSH_KEY }}
+        port: 22
+        script: |
+          cd rework && ./deploy.sh
