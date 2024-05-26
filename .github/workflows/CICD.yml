@@ -59,4 +59,4 @@ jobs:
         key: ${{ secrets.MAIN_SSH_KEY }}
         port: 22
         script: |
-          cd rework && sed -i \"s/^BUILD_NUMBER=.*/BUILD_NUMBER=${{ github.run_number }}/\" .env && ./deploy.sh
+          cd rework && sed -i "s/^BUILD_NUMBER=.*/BUILD_NUMBER=${{ github.run_number }}/" .env && ./deploy.sh
