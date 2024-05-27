@@ -12,4 +12,8 @@ public interface DailyAgendaService {
     UpdateDailyAgendaResponseDto updateDailyAgenda(UpdateDailyAgendaRequestDto updateDailyAgendaRequestDto, SecurityUtils securityUtils);
 
     boolean deleteDailyAgenda(Long dailyAgendaId, SecurityUtils securityUtils);
+
+    ReadDailyCompleteRateResponseDto readDailyCompleteRate(ReadDailyCompleteRateRequestDto readDailyCompleteRateRequestDto, SecurityUtils securityUtils);
+
+    ReadMonthlyCompleteRateResponseDto readMonthlyCompleteRate(ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRateRequestDto, SecurityUtils securityUtils);
 }

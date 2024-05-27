@@ -123,4 +123,52 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
 
         return true;
     }
+
+    @Override
+    public ReadDailyCompleteRateResponseDto readDailyCompleteRate(ReadDailyCompleteRateRequestDto readDailyCompleteRateRequestDto, SecurityUtils securityUtils) {
+        Optional<Member> curMember = memberRepository.findByUserId(securityUtils.getCurrentUserId());
+        Long currentUserId = curMember.get().getId();
+
+        LocalDate date = LocalDate.of(readDailyCompleteRateRequestDto.getYear(), readDailyCompleteRateRequestDto.getMonth(), readDailyCompleteRateRequestDto.getDay());
+        LocalDateTime start = date.atStartOfDay();
+        LocalDateTime end = date.atTime(LocalTime.MAX);
+
+        List<DailyAgenda> agendaList = dailyAgendaRepository.findByMemberIdAndCreatedAtBetween(currentUserId, start, end);
+        int length = agendaList.size();
+        int count = 0;
+        for (DailyAgenda agenda : agendaList) {
+            if (agenda.isState()) {
+                count++;
+            }
+        }
+        return ReadDailyCompleteRateResponseDto.builder()
+                .completeCount(count)
+                .allCount(length)
+                .build();
+
+    }
+
+    @Override
+    public ReadMonthlyCompleteRateResponseDto readMonthlyCompleteRate(ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRateRequestDto, SecurityUtils securityUtils) {
+        Optional<Member> curMember = memberRepository.findByUserId(securityUtils.getCurrentUserId());
+        Long currentUserId = curMember.get().getId();
+
+        LocalDate startDate = LocalDate.of(readMonthlyCompleteRateRequestDto.getYear(), readMonthlyCompleteRateRequestDto.getMonth(), 1);
+        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+        LocalDateTime start = startDate.atStartOfDay();
+        LocalDateTime end = endDate.atTime(LocalTime.MAX);
+
+        List<DailyAgenda> agendaList = dailyAgendaRepository.findByMemberIdAndCreatedAtBetween(currentUserId, start, end);
+        int length = agendaList.size();
+        int count = 0;
+        for (DailyAgenda agenda : agendaList) {
+            if (agenda.isState()) {
+                count++;
+            }
+        }
+        return ReadMonthlyCompleteRateResponseDto.builder()
+                .completeCount(count)
+                .allCount(length)
+                .build();
+    }
 }

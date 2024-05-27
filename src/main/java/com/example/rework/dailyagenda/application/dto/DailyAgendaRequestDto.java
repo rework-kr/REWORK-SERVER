@@ -34,4 +34,23 @@ public class DailyAgendaRequestDto {
         private String todo;
         private boolean state;
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ReadDailyCompleteRateRequestDto {
+        private int year;
+        private int month;
+        private int day;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ReadMonthlyCompleteRateRequestDto {
+        private int year;
+        private int month;
+    }
 }

@@ -43,4 +43,16 @@ public class DailyAgendaController implements DailyAgendaApi {
         boolean result = dailyAgendaService.deleteDailyAgenda(dailyAgendaId, securityUtils);
         return ResponseEntity.status(HttpStatus.OK).body(new CommonResDto<>(1, "오늘의 아젠다 삭제 성공", result));
     }
+
+    @Override
+    public ResponseEntity<CommonResDto<?>> readDailyCompleteRate(ReadDailyCompleteRateRequestDto readDailyCompleteRateRequestDto, SecurityUtils securityUtils) {
+        ReadDailyCompleteRateResponseDto result = dailyAgendaService.readDailyCompleteRate(readDailyCompleteRateRequestDto, securityUtils);
+        return ResponseEntity.status(HttpStatus.OK).body(new CommonResDto<>(1, "오늘의 아젠다 수행률 조회 성공", result));
+    }
+
+    @Override
+    public ResponseEntity<CommonResDto<?>> readMonthlyCompleteRate(ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRateRequestDto, SecurityUtils securityUtils) {
+        ReadMonthlyCompleteRateResponseDto result = dailyAgendaService.readMonthlyCompleteRate(readMonthlyCompleteRateRequestDto, securityUtils);
+        return ResponseEntity.status(HttpStatus.OK).body(new CommonResDto<>(1, "이달의 누적 아젠다 수행률 조회 성공", result));
+    }
 }

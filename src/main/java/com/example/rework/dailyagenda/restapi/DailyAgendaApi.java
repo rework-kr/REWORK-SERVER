@@ -60,7 +60,28 @@ public interface DailyAgendaApi {
     // 완료되지 못한 오늘의 아젠다는 다음날로 복사한다.
     // 하지만 전의 날짜를 클릭해도 해당하는 날짜의 미완성 아젠다를 조회할수는있다.
 
-    //아젠다 수행률
+    //오늘의 아젠다 수행률 (하루기준
+    @Operation(
+            summary = "오늘의 아젠다 수행률 조회 (하루기준)",
+            description = "오늘의 아젠다의 수행률을 조회한다. 사용자 정보와 날짜 정보를 받는다.\n"
+                    + " 아젠다의 총 개수와 성공한 개수를 반환한다."
+    )
+    @GetMapping("/dailyCompleteRate")
+    ResponseEntity<CommonResDto<?>> readDailyCompleteRate(
+            @RequestBody ReadDailyCompleteRateRequestDto readDailyCompleteRateRequestDto,
+            SecurityUtils securityUtils
+    );
+
+    @Operation(
+            summary = "오늘의 아젠다 수행률 조회 (한달기준)",
+            description = "오늘의 아젠다의 수행률을 조회한다. 사용자 정보와 날짜 정보를 받는다. \n"
+                    + "아젠다의 총 개수와 성공한 개수를 반환한다."
+    )
+    @GetMapping("/monthlyCompleteRate")
+    ResponseEntity<CommonResDto<?>> readMonthlyCompleteRate(
+            @RequestBody ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRateRequestDto,
+            SecurityUtils securityUtils
+    );
 
     //아젠다 정렬
 

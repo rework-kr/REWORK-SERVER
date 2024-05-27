@@ -42,4 +42,22 @@ public class DailyAgendaResponseDto {
         private String todo;
         private boolean state;
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ReadDailyCompleteRateResponseDto {
+        private int completeCount;
+        private int allCount;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ReadMonthlyCompleteRateResponseDto{
+        private int completeCount;
+        private int allCount;
+    }
 }
