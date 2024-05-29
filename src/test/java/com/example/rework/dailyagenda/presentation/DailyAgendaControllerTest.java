@@ -16,6 +16,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -38,6 +39,7 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
         DailyAgenda dailyAgenda = DailyAgenda.builder()
                 .todo("오늘의 아젠다")
                 .state(false)
+                .pagingId(1L)
                 .member(member)
                 .build();
 
@@ -253,6 +255,40 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
         assertAll(
                 () -> assertThat(completeCount).isEqualTo(0),
                 () -> assertThat(allCount).isEqualTo(1)
+        );
+    }
+
+
+
+    @DisplayName("오늘의 아젠다 pagingId 별 정렬 테스트")
+    @Test
+    @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
+    void updateDailyAgendataPagingIdTest() throws Exception {
+        //given
+        String url = "/api/v1/dailyAgenda/bulk-update-pagingId";
+        Long updatePagingId=2L;
+        List<DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtos = DailyAgendaFixture.updateDailyAgendaListRequestDtoList(dailyAgendaId,updatePagingId);
+
+        //when
+        MvcResult mvcResult = mockMvc.perform(put(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateDailyAgendaListRequestDtos))
+                        .characterEncoding(StandardCharsets.UTF_8)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        //then
+        mvcResult.getResponse().setContentType("application/json;charset=UTF-8");
+        String result = mvcResult.getResponse().getContentAsString();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode jsonNode = objectMapper.readTree(result);
+        JsonNode resultData = jsonNode.get("data").get(0);
+        Long pagingId = resultData.get("pagingId").asLong();
+        assertAll(
+                () -> assertThat(pagingId).isEqualTo(2L)
         );
     }
 }
