@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "오늘의 아젠다 API", description = "오늘의 아젠다 관련 API")
 @RestController
 @RequestMapping("/api/v1/dailyAgenda")
@@ -84,6 +86,21 @@ public interface DailyAgendaApi {
     );
 
     //아젠다 정렬
+    @Operation(
+            summary = "오늘의 아젠다 pagingId 별 정렬",
+            description = "오늘의 아젠다의 페이지의 세션이 종료될 때 pagingId 값을 전부 넘긴다. 해당 pagingId로 서버에서 벌크업데이트를 시킨다 \n"
+                    + "프론트에서 정렬해서 준 agenda를 DB에저장하고 반환한다. \n"+
+                    "{\n" +
+                    "    \"todo\":\"오늘의 아젠다5\",\n" +
+                    "    \"pagingId\":3,\n" +
+                    "    \"createdAt\":\"2024-05-29\"\n" +
+                    "}"
+    )
+    @PutMapping("/bulk-update-pagingId")
+    ResponseEntity<CommonResDto<?>> updateDailyAgendataPagingId(
+            @RequestBody List<UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList,
+            SecurityUtils securityUtils
+    );
 
 
 }

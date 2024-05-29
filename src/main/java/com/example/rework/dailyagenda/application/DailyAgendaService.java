@@ -4,6 +4,8 @@ import com.example.rework.config.security.SecurityUtils;
 import com.example.rework.dailyagenda.application.dto.DailyAgendaRequestDto.*;
 import com.example.rework.dailyagenda.application.dto.DailyAgendaResponseDto.*;
 
+import java.util.List;
+
 public interface DailyAgendaService {
     ReadDailyAgendaResponseDto readDailyAgenda(ReadDailyAgendaRequestDto readDailyAgendaRequestDto, SecurityUtils securityUtils);
 
@@ -16,4 +18,7 @@ public interface DailyAgendaService {
     ReadDailyCompleteRateResponseDto readDailyCompleteRate(ReadDailyCompleteRateRequestDto readDailyCompleteRateRequestDto, SecurityUtils securityUtils);
 
     ReadMonthlyCompleteRateResponseDto readMonthlyCompleteRate(ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRateRequestDto, SecurityUtils securityUtils);
+
+    List<ReadDetailDailyAgendaResponseDto> bulkUpdateDailyAgendaByPagingId(List<UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList, SecurityUtils securityUtils);
+
 }

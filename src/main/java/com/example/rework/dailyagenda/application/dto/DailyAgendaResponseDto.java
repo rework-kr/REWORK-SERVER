@@ -40,7 +40,15 @@ public class DailyAgendaResponseDto {
     public static class ReadDetailDailyAgendaResponseDto {
         private Long id;
         private String todo;
+        private Long pagingId;
         private boolean state;
+
+        public ReadDetailDailyAgendaResponseDto(Long id, String todo, boolean state,Long pagingId) {
+            this.id = id;
+            this.todo = todo;
+            this.state = state;
+            this.pagingId=pagingId;
+        }
     }
 
     @Getter

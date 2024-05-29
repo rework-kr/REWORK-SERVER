@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/dailyAgenda")
 @RequiredArgsConstructor
@@ -55,4 +57,11 @@ public class DailyAgendaController implements DailyAgendaApi {
         ReadMonthlyCompleteRateResponseDto result = dailyAgendaService.readMonthlyCompleteRate(readMonthlyCompleteRateRequestDto, securityUtils);
         return ResponseEntity.status(HttpStatus.OK).body(new CommonResDto<>(1, "이달의 누적 아젠다 수행률 조회 성공", result));
     }
+
+    @Override
+    public ResponseEntity<CommonResDto<?>> updateDailyAgendataPagingId (List<UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList , SecurityUtils securityUtils) {
+        List<ReadDetailDailyAgendaResponseDto> result = dailyAgendaService.bulkUpdateDailyAgendaByPagingId(updateDailyAgendaListRequestDtoList, securityUtils);
+        return ResponseEntity.status(HttpStatus.OK).body(new CommonResDto<>(1, "pagingId 별 오늘의 아젠다 업데이트 성공", result));
+    }
+
 }

@@ -16,7 +16,8 @@ public enum ErrorCodes {
     UnAuthorizedException(HttpStatus.UNAUTHORIZED,"REQ_002","권한이 없습니다"),
     DATABASE_VALIDATION_ERROR(HttpStatus.CONFLICT,"VALIDATION_001","DB ERROR"),
     INVALID_DISCORD_MESSAGE(HttpStatus.BAD_REQUEST,"DISCORD_001","DISCORD_MESSAGE_ERROR"),
-    NOT_FOUND_MONTHLY_AGENDA_EXCEPTION(HttpStatus.NOT_FOUND,"AGENDA_001","해당하는 아젠다가 없습니다.");
+    NOT_FOUND_MONTHLY_AGENDA_EXCEPTION(HttpStatus.NOT_FOUND,"AGENDA_001","해당하는 아젠다가 없습니다."),
+    ALREADY_PAGINGID_ERROR(HttpStatus.CONFLICT,"AGENDA_002","이미 생성된 페이징번호입니다");
 
 
     private final String code;

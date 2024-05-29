@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 public class DailyAgendaRequestDto {
     @Getter
     @NoArgsConstructor
@@ -23,6 +25,20 @@ public class DailyAgendaRequestDto {
     @Builder
     public static class CreateDailyAgendaRequestDto {
         private String todo;
+        private Long pagingId;
+        private LocalDate createdAt;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class UpdateDailyAgendaListRequestDto {
+        private Long agendaId;
+        private String todo;
+        private boolean state;
+        private Long pagingId;
+        private LocalDate createdAt;
     }
 
     @Getter
@@ -33,6 +49,7 @@ public class DailyAgendaRequestDto {
         private Long agendaId;
         private String todo;
         private boolean state;
+        private Long pagingId;
     }
 
     @Getter

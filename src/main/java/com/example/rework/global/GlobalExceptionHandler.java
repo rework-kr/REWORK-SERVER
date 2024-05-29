@@ -46,6 +46,30 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, errorCode.getStatus());
     }
 
+
+    /**
+     * 중복된 페이징번호
+     */
+    @ExceptionHandler(AlreadyPagingIdException.class)
+    protected ResponseEntity<?> alreadyPagingIdExceptionException(AlreadyPagingIdException ex) {
+        log.error("ALREADY_PAGINGID_ERROR :: ");
+
+        ErrorCodes errorCode = ErrorCodes.ALREADY_PAGINGID_ERROR;
+
+        ErrorResponse error = ErrorResponse.builder()
+                .status(errorCode.getStatus().value())
+                .message(errorCode.getMessage())
+                .code(errorCode.getCode())
+                .build();
+
+        CommonResponse response = CommonResponse.builder()
+                .success(false)
+                .error(error)
+                .build();
+
+        return new ResponseEntity<>(response, errorCode.getStatus());
+    }
+
     /**
      * discord 전송 오류
      */

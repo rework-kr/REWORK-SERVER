@@ -22,8 +22,8 @@ public class DailyAgenda extends BaseTimeEntity {
     @Column(length = 30, nullable = false)
     private boolean state;
 
-//    @Column()
-//    private Long pagingId;
+    @Column(name = "PAGING_ID",nullable = false, unique = false)
+    private Long pagingId;
 
     @JoinColumn(name = "MEMBER_ID")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,5 +35,9 @@ public class DailyAgenda extends BaseTimeEntity {
 
     public void setState(boolean state) {
         this.state = state;
+    }
+
+    public void updatePagingId(Long pagingId) {
+        this.pagingId = pagingId;
     }
 }
