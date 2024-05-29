@@ -2,10 +2,16 @@ package com.example.rework.dailyagenda.fixture;
 
 import com.example.rework.dailyagenda.application.dto.DailyAgendaRequestDto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 public class DailyAgendaFixture {
     public static DailyAgendaRequestDto.CreateDailyAgendaRequestDto createAgenda() {
         return DailyAgendaRequestDto.CreateDailyAgendaRequestDto.builder()
                 .todo("생성된 오늘의 아젠다")
+                .createdAt(LocalDate.from(LocalDateTime.of(2024, 5, 29, 0, 0)))
+                .pagingId(2L)
                 .build();
     }
 
@@ -38,5 +44,17 @@ public class DailyAgendaFixture {
                 .year(2024)
                 .month(5)
                 .build();
+    }
+
+    public static List<DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList(Long dailyAgendaId,Long updatePagingId) {
+        return List.of(
+                DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto.builder()
+                        .agendaId(dailyAgendaId)
+                        .todo("오늘의 아젠다1")
+                        .state(true)
+                        .pagingId(updatePagingId)
+                        .createdAt(LocalDate.from(LocalDateTime.of(2024, 5, 29, 0, 0)))
+                        .build()
+        );
     }
 }

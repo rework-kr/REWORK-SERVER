@@ -2,7 +2,6 @@ package com.example.rework.member.application.impl;
 
 import com.example.rework.auth.MemberRole;
 import com.example.rework.auth.entity.RefreshToken;
-import com.example.rework.auth.jwt.JwtProvider;
 import com.example.rework.auth.repository.RefreshTokenRepository;
 import com.example.rework.member.application.dto.MemberResponseDto.MemberCreateResponseDto;
 import com.example.rework.member.application.dto.MemeberRequestDto.SignUpRequestDto;
@@ -37,8 +36,6 @@ class MemberServiceImplTest {
     private MemberServiceImpl memberService;
     @Mock
     private MemberRepository memberRepository;
-    @Mock
-    private JwtProvider jwtProvider;
     @Mock
     private RefreshTokenRepository refreshTokenRepository;
     @Mock
