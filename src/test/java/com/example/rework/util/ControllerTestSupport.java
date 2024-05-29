@@ -1,5 +1,6 @@
 package com.example.rework.util;
 
+import com.example.rework.dailyagenda.domain.repository.DailyAgendaRepository;
 import com.example.rework.monthlyagenda.domain.repository.MonthlyAgendaRepository;
 import com.example.rework.member.domain.repository.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,4 +28,7 @@ public abstract class ControllerTestSupport {
 
     @Autowired
     protected MonthlyAgendaRepository monthlyAgendaRepository;
+
+    @Autowired
+    protected DailyAgendaRepository dailyAgendaRepository;
 }
