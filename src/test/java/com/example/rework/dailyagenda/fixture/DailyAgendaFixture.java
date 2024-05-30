@@ -7,19 +7,24 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class DailyAgendaFixture {
+    static LocalDate Today = LocalDate.now();
+    static int TEST_YEAR = Today.getYear();
+    static int TEST_MONTH = Today.getMonthValue();
+    static int TEST_DAY = Today.getDayOfMonth();
+
     public static DailyAgendaRequestDto.CreateDailyAgendaRequestDto createAgenda() {
         return DailyAgendaRequestDto.CreateDailyAgendaRequestDto.builder()
                 .todo("생성된 오늘의 아젠다")
-                .createdAt(LocalDate.from(LocalDateTime.of(2024, 5, 29, 0, 0)))
+                .createdAt(LocalDate.from(LocalDateTime.of(TEST_YEAR, TEST_MONTH, TEST_DAY, 0, 0)))
                 .pagingId(2L)
                 .build();
     }
 
     public static DailyAgendaRequestDto.ReadDailyAgendaRequestDto readAgenda() {
         return DailyAgendaRequestDto.ReadDailyAgendaRequestDto.builder()
-                .year(2024)
-                .month(5)
-                .day(29)
+                .year(TEST_YEAR)
+                .month(TEST_MONTH)
+                .day(TEST_DAY)
                 .build();
     }
 
@@ -33,27 +38,27 @@ public class DailyAgendaFixture {
 
     public static DailyAgendaRequestDto.ReadDailyCompleteRateRequestDto readDailyCompleteRate() {
         return DailyAgendaRequestDto.ReadDailyCompleteRateRequestDto.builder()
-                .year(2024)
-                .month(5)
-                .day(29)
+                .year(TEST_YEAR)
+                .month(TEST_MONTH)
+                .day(TEST_DAY)
                 .build();
     }
 
     public static DailyAgendaRequestDto.ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRate() {
         return DailyAgendaRequestDto.ReadMonthlyCompleteRateRequestDto.builder()
-                .year(2024)
-                .month(5)
+                .year(TEST_YEAR)
+                .month(TEST_MONTH)
                 .build();
     }
 
-    public static List<DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList(Long dailyAgendaId,Long updatePagingId) {
+    public static List<DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList(Long dailyAgendaId, Long updatePagingId) {
         return List.of(
                 DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto.builder()
                         .agendaId(dailyAgendaId)
                         .todo("오늘의 아젠다1")
                         .state(true)
                         .pagingId(updatePagingId)
-                        .createdAt(LocalDate.from(LocalDateTime.of(2024, 5, 29, 0, 0)))
+                        .createdAt(LocalDate.from(LocalDateTime.of(TEST_YEAR, TEST_MONTH, TEST_DAY, 0, 0)))
                         .build()
         );
     }
