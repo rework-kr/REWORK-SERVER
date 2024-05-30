@@ -25,7 +25,7 @@ public class WebhookService {
 
     // 알림을 보내는 메서드
     @Transactional
-    public boolean sendDiscordNotification(String name) {
+    public boolean sendDiscordNotification(String email) {
 
         try {
             // REST 요청을 처리하기 위한 RestTemplate 객체 생성
@@ -35,7 +35,7 @@ public class WebhookService {
             Long totalMembers = memberRepository.count();
 
             // 알림 메시지 생성
-            String message = " 🎉 Rework 서비스에 "+name+"님이 "+totalMembers+"번째로 회원가입 했습니다! 🎉";
+            String message = " 🎉 Rework 서비스에 "+email+"님이 "+totalMembers+"번째로 회원가입 했습니다! 🎉";
 
             // HTTP 요청을 위한 헤더 설정
             HttpHeaders headers = new HttpHeaders();

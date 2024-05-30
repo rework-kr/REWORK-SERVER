@@ -49,7 +49,7 @@ public class MailSenderServiceImpl implements MailSenderService {
         MemberCreateResponseDto member = memberService.createMember(signUpRequestDto);
         //회원가입 한 이메일로 랜덤 비밀번호 전송
         if(mailSenderApi.sendRandomPasswordMail(sendMailDto,randomPassword)){
-            webhookService.sendDiscordNotification(member.getName());
+            webhookService.sendDiscordNotification(email);
             return true;
         }
         return false;
