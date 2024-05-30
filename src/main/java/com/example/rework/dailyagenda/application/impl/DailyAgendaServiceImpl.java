@@ -53,7 +53,7 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
         }
 
         List<ReadDetailDailyAgendaResponseDto> result = agendaList.stream()
-                .map(agenda -> new ReadDetailDailyAgendaResponseDto(agenda.getId(), agenda.getTodo(), agenda.isState(),agenda.getPagingId())).toList();
+                .map(agenda -> new ReadDetailDailyAgendaResponseDto(agenda.getId(), agenda.getTodo(), agenda.isState(), agenda.getPagingId())).toList();
 
         return new ReadDailyAgendaResponseDto(result);
     }
@@ -67,7 +67,7 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
         LocalDateTime startOfDay = createDailyAgendaRequestDto.getCreatedAt().atStartOfDay();
         LocalDateTime endOfDay = createDailyAgendaRequestDto.getCreatedAt().atTime(LocalTime.MAX);
 
-        if(dailyAgendaRepository.existsByPagingIdAndCreatedAtBetween(createDailyAgendaRequestDto.getPagingId(),startOfDay,endOfDay)){
+        if (dailyAgendaRepository.existsByPagingIdAndCreatedAtBetween(createDailyAgendaRequestDto.getPagingId(), startOfDay, endOfDay)) {
             throw new AlreadyPagingIdException("이미 등록된 페이징번호입니다");
         }
 
@@ -163,7 +163,6 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
 
     @Override
     public ReadMonthlyCompleteRateResponseDto readMonthlyCompleteRate(ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRateRequestDto, SecurityUtils securityUtils) {
-        System.out.println("test123");
         Optional<Member> curMember = memberRepository.findByUserId(securityUtils.getCurrentUserId());
         Long currentUserId = curMember.get().getId();
 
@@ -201,7 +200,7 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
         LocalDateTime endOfDay = createdAt.atTime(LocalTime.MAX);
 
         // DB에서 현재 유저의 아젠다 리스트 조회
-        List<DailyAgenda> dailyAgendaList = dailyAgendaRepository.findByMemberIdAndCreatedAtBetween(currentUserId, startOfDay,endOfDay);
+        List<DailyAgenda> dailyAgendaList = dailyAgendaRepository.findByMemberIdAndCreatedAtBetween(currentUserId, startOfDay, endOfDay);
 
         // 현재 유저가 소유한 아젠다가 아닌 경우 예외 처리
         dailyAgendaList.stream().filter(agenda -> !agenda.getMember().getId().equals(currentUserId))
@@ -225,7 +224,7 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
 
         // 업데이트된 아젠다 리스트 반환
         List<ReadDetailDailyAgendaResponseDto> result = dailyAgenda.stream()
-                .map(agenda -> new ReadDetailDailyAgendaResponseDto(agenda.getId(), agenda.getTodo(), agenda.isState(),agenda.getPagingId())).toList();
+                .map(agenda -> new ReadDetailDailyAgendaResponseDto(agenda.getId(), agenda.getTodo(), agenda.isState(), agenda.getPagingId())).toList();
 
         return result;
     }
