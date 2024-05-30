@@ -24,6 +24,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,21 +58,118 @@ class DailyAgendaServiceImplTest {
     }
 
     @Test
+    @DisplayName("오늘의 아젠다를 생성하면 정보를 반환한다.")
+    void createDailyAgenda() {
+        DailyAgendaRequestDto.CreateDailyAgendaRequestDto createDailyAgendaRequestDto = getDailyAgendaCreateReq();
+
+        LocalDateTime startOfDay = createDailyAgendaRequestDto.getCreatedAt().atStartOfDay();
+        LocalDateTime endOfDay = createDailyAgendaRequestDto.getCreatedAt().atTime(LocalTime.MAX);
+
+        given(memberRepository.findByUserId(any()))
+                .willReturn(Optional.ofNullable(getMember()));
+
+        given(memberRepository.findById(any()))
+                .willReturn(Optional.ofNullable(getMember()));
+        given(dailyAgendaRepository.save(any(DailyAgenda.class)))
+                .willReturn(getDailyAgenda());
+
+        //when
+        DailyAgendaResponseDto.CreateDailyAgendaResponseDto createDailyAgendaResponseDto = dailyAgendaService.createDailyAgenda(createDailyAgendaRequestDto, null);
+
+        //then
+        Assertions.assertThat(createDailyAgendaResponseDto.getAgendaId()).isEqualTo(1L);
+        Assertions.assertThat(createDailyAgendaResponseDto.getTodo()).isEqualTo("오늘의 아젠다");
+
+    }
+
+    @Test
+    @DisplayName("오늘의 아젠다 조회")
+    void readDailyAgenda() {
+        DailyAgendaRequestDto.ReadDailyAgendaRequestDto readDailyAgendaRequestDto = getDailyAgendaReadReq();
+
+        Long userId = 1L;
+        LocalDate date = LocalDate.of(readDailyAgendaRequestDto.getYear(), readDailyAgendaRequestDto.getMonth(), readDailyAgendaRequestDto.getDay());
+        LocalDateTime start = date.atStartOfDay();
+        LocalDateTime end = date.atTime(LocalTime.MAX);
+        List<DailyAgenda> dailyAgendaList = getDailyAgendaList(userId);
+
+        given(memberRepository.findByUserId(any()))
+                .willReturn(Optional.ofNullable(getMember()));
+
+        given(dailyAgendaRepository.findByMemberIdAndCreatedAtBetweenAndState(userId, start, end, readDailyAgendaRequestDto.getState()))
+                .willReturn(dailyAgendaList);
+
+        DailyAgendaResponseDto.ReadDailyAgendaResponseDto readDailyAgendaResponseDto = dailyAgendaService.readDailyAgenda(readDailyAgendaRequestDto, null);
+
+        // then
+        Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(0).getPagingId()).isEqualTo(1L);
+        Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(0).getTodo()).isEqualTo("test1");
+        Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(0).isState()).isFalse();
+
+        Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(1).getPagingId()).isEqualTo(2L);
+        Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(1).getTodo()).isEqualTo("test2");
+        Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(1).isState()).isFalse();
+    }
+
+    @Test
+    @DisplayName("오늘의 아젠다 수정")
+    void updateDailyAgenda() {
+        //given
+        DailyAgendaRequestDto.UpdateDailyAgendaRequestDto updateDailyAgendaRequestDto = getDailyAgendaUpdateReq();
+
+        given(memberRepository.findByUserId(any()))
+                .willReturn(Optional.ofNullable(getMember()));
+
+        given(memberRepository.findById(any()))
+                .willReturn(Optional.ofNullable(getMember()));
+
+        given(dailyAgendaRepository.findById(any()))
+                .willReturn(Optional.ofNullable(getDailyAgenda()));
+        //when
+        DailyAgendaResponseDto.UpdateDailyAgendaResponseDto updateDailyAgendaResponseDto = dailyAgendaService.updateDailyAgenda(updateDailyAgendaRequestDto, null);
+
+        //then
+        Assertions.assertThat(updateDailyAgendaResponseDto.getAgendaId()).isEqualTo(1L);
+        Assertions.assertThat(updateDailyAgendaResponseDto.getTodo()).isEqualTo("수정된 아젠다");
+
+    }
+
+
+    @Test
+    @DisplayName("오늘의 아젠다 삭제")
+    void deleteDailyAgenda() {
+        //given
+        given(memberRepository.findByUserId(any()))
+                .willReturn(Optional.ofNullable(getMember()));
+
+        given(memberRepository.findById(any()))
+                .willReturn(Optional.ofNullable(getMember()));
+        given(dailyAgendaRepository.findById(any()))
+                .willReturn(Optional.ofNullable(getDailyAgenda()));
+
+        //when
+        boolean result = dailyAgendaService.deleteDailyAgenda(getDailyAgenda().getId(), null);
+
+        //then
+        Assertions.assertThat(result).isTrue();
+    }
+
+    @Test
     @DisplayName("pagingId가 중복되지 않을 때 아젠다 일괄 업데이트 테스트")
     void bulkUpdateDailyAgendaByPagingId_Success() {
         // given
         Long userId = 1L;
         Long firstPagingId = 5L;
-        Long secondPagingId= 4L;
+        Long secondPagingId = 4L;
         LocalDate createdAt = LocalDate.of(2024, 5, 29);
-        List<DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList = getUpdateDailyAgendaListRequestDtos(createdAt,firstPagingId,secondPagingId);
-        List<DailyAgenda> dailyAgendaList = getDailyAgenda(userId);
+        List<DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList = getUpdateDailyAgendaListRequestDtos(createdAt, firstPagingId, secondPagingId);
+        List<DailyAgenda> dailyAgendaList = getDailyAgendaList(userId);
 
         // mock 객체 설정
         given(memberRepository.findByUserId(any())).willReturn(Optional.ofNullable(getMember()));
         given(dailyAgendaRepository.findByMemberIdAndCreatedAtBetween(userId,
-                        LocalDateTime.of(2024, 5, 29, 0, 0),
-                        LocalDateTime.of(2024, 5, 29, 23, 59, 59, 999_999_999))).willReturn(dailyAgendaList);
+                LocalDateTime.of(2024, 5, 29, 0, 0),
+                LocalDateTime.of(2024, 5, 29, 23, 59, 59, 999_999_999))).willReturn(dailyAgendaList);
 
         given(dailyAgendaRepository.saveAll(dailyAgendaList)).willReturn(dailyAgendaList);
 
@@ -97,10 +195,10 @@ class DailyAgendaServiceImplTest {
         // given
         Long userId = 1L;
         Long firstPagingId = 5L;
-        Long secondPagingId= 5L;
+        Long secondPagingId = 5L;
         LocalDate createdAt = LocalDate.of(2024, 5, 29);
-        List<DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList = getUpdateDailyAgendaListRequestDtos(createdAt,firstPagingId,secondPagingId);
-        List<DailyAgenda> dailyAgendaList = getDailyAgenda(userId);
+        List<DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList = getUpdateDailyAgendaListRequestDtos(createdAt, firstPagingId, secondPagingId);
+        List<DailyAgenda> dailyAgendaList = getDailyAgendaList(userId);
 
         // mock 객체 설정
         given(memberRepository.findByUserId(any())).willReturn(Optional.ofNullable(getMember()));
@@ -110,7 +208,43 @@ class DailyAgendaServiceImplTest {
         });
     }
 
-    private static List<DailyAgenda> getDailyAgenda(Long userId) {
+    private DailyAgendaRequestDto.CreateDailyAgendaRequestDto getDailyAgendaCreateReq() {
+        return DailyAgendaRequestDto.CreateDailyAgendaRequestDto.builder()
+                .pagingId(1L)
+                .todo("오늘의 아젠다")
+                .createdAt(LocalDate.parse("2024-05-30"))
+                .build();
+    }
+
+    private DailyAgendaRequestDto.ReadDailyAgendaRequestDto getDailyAgendaReadReq() {
+        return DailyAgendaRequestDto.ReadDailyAgendaRequestDto.builder()
+                .year(2024)
+                .month(5)
+                .day(30)
+                .state(false)
+                .build();
+    }
+
+    private DailyAgendaRequestDto.UpdateDailyAgendaRequestDto getDailyAgendaUpdateReq() {
+        return DailyAgendaRequestDto.UpdateDailyAgendaRequestDto.builder()
+                .agendaId(1L)
+                .todo("수정된 아젠다")
+                .state(true)
+                .build();
+    }
+
+    private DailyAgenda getDailyAgenda() {
+        DailyAgenda dailyAgenda = DailyAgenda.builder()
+                .todo("오늘의 아젠다")
+                .pagingId(1L)
+                .state(false)
+                .member(getMember())
+                .build();
+        ReflectionTestUtils.setField(dailyAgenda, "id", 1L);
+        return dailyAgenda;
+    }
+
+    private static List<DailyAgenda> getDailyAgendaList(Long userId) {
         Member member = Member.builder()
                 .id(userId)
                 .build();
@@ -135,7 +269,7 @@ class DailyAgendaServiceImplTest {
         return dailyAgendaList;
     }
 
-    private static List<DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto> getUpdateDailyAgendaListRequestDtos(LocalDate createdAt,Long firstPagingId,Long secondPagingId) {
+    private static List<DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto> getUpdateDailyAgendaListRequestDtos(LocalDate createdAt, Long firstPagingId, Long secondPagingId) {
         List<DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList = new ArrayList<>();
         updateDailyAgendaListRequestDtoList.add(DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto.builder()
                 .agendaId(1L)
@@ -154,7 +288,7 @@ class DailyAgendaServiceImplTest {
         return updateDailyAgendaListRequestDtoList;
     }
 
-    private Member getMember(){
+    private Member getMember() {
         Member member = Member.builder()
                 .role(MemberRole.MEMBER)
                 .name("민우")
