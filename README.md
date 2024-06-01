@@ -1,3 +1,5 @@
+# 아키텍처 구조
+<img width="753" alt="image" src="https://github.com/rework-kr/REWORK-SERVER/assets/79193811/aea022e2-37e3-4e89-8328-d0297fb507c9">
 
 # git flow role
 # Branch Naming Convention 브랜치명/이슈번호-기능명
