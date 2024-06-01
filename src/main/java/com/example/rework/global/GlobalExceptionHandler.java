@@ -73,11 +73,12 @@ public class GlobalExceptionHandler {
     /**
      * 패스워드 불일치 에러
      */
-    @ExceptionHandler(PasswordNotMatchException.class)
-    protected ResponseEntity<?> passwordUnchangedException(PasswordNotMatchException ex) {
+    @ExceptionHandler(PasswordUnchangedException.class)
+    protected ResponseEntity<?> passwordUnchangedException(PasswordUnchangedException ex) {
         log.error("PasswordUnchangedException :: ");
 
-        ErrorCodes errorCode = ErrorCodes.PASSWORD_NOT_MATCH;
+        ErrorCodes errorCode = ErrorCodes.PASSWORD_UNCHANGED_EXCEPTION;
+
 
         ErrorResponse error = ErrorResponse.builder()
                 .status(errorCode.getStatus().value())
