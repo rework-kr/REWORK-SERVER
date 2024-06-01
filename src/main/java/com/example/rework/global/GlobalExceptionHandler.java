@@ -71,13 +71,13 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * discord 전송 오류
+     * 패스워드 불일치 에러
      */
-    @ExceptionHandler(PasswordUnchangedException.class)
-    protected ResponseEntity<?> passwordUnchangedException(PasswordUnchangedException ex) {
+    @ExceptionHandler(PasswordNotMatchException.class)
+    protected ResponseEntity<?> passwordUnchangedException(PasswordNotMatchException ex) {
         log.error("PasswordUnchangedException :: ");
 
-        ErrorCodes errorCode = ErrorCodes.PASSWORD_UNCHANGED_EXCEPTION;
+        ErrorCodes errorCode = ErrorCodes.PASSWORD_NOT_MATCH;
 
         ErrorResponse error = ErrorResponse.builder()
                 .status(errorCode.getStatus().value())
