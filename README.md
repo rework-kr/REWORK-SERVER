@@ -1,3 +1,187 @@
+# 패키지 구조
+```bash
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── example
+    │   │           └── rework
+    │   │               ├── ReworkApplication.java
+    │   │               ├── auth
+    │   │               │   ├── MemberRole.java
+    │   │               │   ├── cookie
+    │   │               │   │   └── CookieUtil.java
+    │   │               │   ├── entity
+    │   │               │   │   └── RefreshToken.java
+    │   │               │   ├── jwt
+    │   │               │   │   ├── JwtAuthenticationFilter.java
+    │   │               │   │   ├── JwtAuthorizationFilter.java
+    │   │               │   │   ├── JwtProvider.java
+    │   │               │   │   ├── MemberDetails.java
+    │   │               │   │   └── MemberDetailsService.java
+    │   │               │   ├── repository
+    │   │               │   │   └── RefreshTokenRepository.java
+    │   │               │   └── service
+    │   │               │       └── RefreshTokenService.java
+    │   │               ├── config
+    │   │               │   ├── bcrypt
+    │   │               │   │   └── BcryptConfig.java
+    │   │               │   ├── jpa
+    │   │               │   │   └── JpaAuditingConfig.java
+    │   │               │   ├── mail
+    │   │               │   │   └── MailConfig.java
+    │   │               │   ├── redis
+    │   │               │   │   ├── EmbeddedRedisConfig.java
+    │   │               │   │   └── RedisConfig.java
+    │   │               │   ├── security
+    │   │               │   │   ├── SecurityConfig.java
+    │   │               │   │   └── SecurityUtils.java
+    │   │               │   └── swagger
+    │   │               │       └── SwaggerConfig.java
+    │   │               ├── dailyagenda
+    │   │               │   ├── application
+    │   │               │   │   ├── DailyAgendaService.java
+    │   │               │   │   ├── ScheduleService.java
+    │   │               │   │   ├── dto
+    │   │               │   │   │   ├── DailyAgendaRequestDto.java
+    │   │               │   │   │   └── DailyAgendaResponseDto.java
+    │   │               │   │   └── impl
+    │   │               │   │       └── DailyAgendaServiceImpl.java
+    │   │               │   ├── domain
+    │   │               │   │   ├── DailyAgenda.java
+    │   │               │   │   └── repository
+    │   │               │   │       └── DailyAgendaRepository.java
+    │   │               │   ├── presentation
+    │   │               │   │   └── DailyAgendaController.java
+    │   │               │   └── restapi
+    │   │               │       └── DailyAgendaApi.java
+    │   │               ├── discord
+    │   │               │   └── WebhookService.java
+    │   │               ├── global
+    │   │               │   ├── ErrorCodes.java
+    │   │               │   ├── ErrorResponse.java
+    │   │               │   ├── GlobalExceptionHandler.java
+    │   │               │   ├── GlobalExceptionHandlerFilter.java
+    │   │               │   ├── base
+    │   │               │   │   └── BaseTimeEntity.java
+    │   │               │   ├── common
+    │   │               │   │   └── CommonResDto.java
+    │   │               │   ├── dto
+    │   │               │   │   ├── CommonResponse.java
+    │   │               │   │   └── ErrorResponse.java
+    │   │               │   └── error
+    │   │               │       ├── AlreadyPagingIdException.java
+    │   │               │       ├── DuplicateAccountException.java
+    │   │               │       ├── EncryptException.java
+    │   │               │       ├── InvalidDiscordMessage.java
+    │   │               │       ├── InvalidTokenException.java
+    │   │               │       ├── NotFoundAccountException.java
+    │   │               │       ├── NotFoundAgendaException.java
+    │   │               │       ├── PasswordNotMatchException.java
+    │   │               │       ├── PasswordUnchangedException.java
+    │   │               │       └── UnAuthorizedException.java
+    │   │               ├── mail
+    │   │               │   ├── MailPurpose.java
+    │   │               │   ├── application
+    │   │               │   │   ├── MailSenderService.java
+    │   │               │   │   ├── dto
+    │   │               │   │   │   └── MailRequestDto.java
+    │   │               │   │   └── impl
+    │   │               │   │       └── MailSenderServiceImpl.java
+    │   │               │   ├── infra
+    │   │               │   │   └── MailSenderApi.java
+    │   │               │   ├── presentation
+    │   │               │   │   └── MailSenderController.java
+    │   │               │   ├── restapi
+    │   │               │   │   └── EmailApi.java
+    │   │               │   └── utils
+    │   │               │       └── GeneRateRandomPassword.java
+    │   │               ├── member
+    │   │               │   ├── application
+    │   │               │   │   ├── MemberService.java
+    │   │               │   │   ├── dto
+    │   │               │   │   │   ├── MemberResponseDto.java
+    │   │               │   │   │   └── MemeberRequestDto.java
+    │   │               │   │   └── impl
+    │   │               │   │       └── MemberServiceImpl.java
+    │   │               │   ├── domain
+    │   │               │   │   ├── Member.java
+    │   │               │   │   └── repository
+    │   │               │   │       └── MemberRepository.java
+    │   │               │   ├── exception
+    │   │               │   │   ├── dto
+    │   │               │   │   └── error
+    │   │               │   ├── infra
+    │   │               │   ├── presentation
+    │   │               │   │   └── MemberController.java
+    │   │               │   ├── restapi
+    │   │               │   │   └── MemberApi.java
+    │   │               │   └── utils
+    │   │               └── monthlyagenda
+    │   │                   ├── application
+    │   │                   │   ├── MonthlyAgendaService.java
+    │   │                   │   ├── dto
+    │   │                   │   │   ├── MonthlyAgendaRequestDto.java
+    │   │                   │   │   └── MonthlyAgendaResponseDto.java
+    │   │                   │   └── impl
+    │   │                   │       └── MonthlyAgendaServiceImpl.java
+    │   │                   ├── domain
+    │   │                   │   ├── MonthlyAgenda.java
+    │   │                   │   └── repository
+    │   │                   │       └── MonthlyAgendaRepository.java
+    │   │                   ├── presentation
+    │   │                   │   └── MonthlyAgendaController.java
+    │   │                   └── restapi
+    │   │                       └── MonthlyAgendaApi.java
+    │   └── resources
+    │       ├── application-dev.yml
+    │       ├── application-local.yml
+    │       ├── application-test.yml
+    │       ├── application.yml
+    │       ├── db
+    │       │   └── data.sql
+    │       └── templates
+    │           └── acceptEmail.html
+    └── test
+        └── java
+            └── com
+                └── example
+                    └── rework
+                        ├── MonthlyAgenda
+                        │   ├── application
+                        │   │   └── impl
+                        │   │       └── MonthlyAgendaServiceImplTest.java
+                        │   ├── fixture
+                        │   │   └── MonthlyAgendaFixture.java
+                        │   └── presentation
+                        │       └── MonthlyAgendaControllerTest.java
+                        ├── ReworkApplicationTests.java
+                        ├── dailyagenda
+                        │   ├── application
+                        │   │   ├── ScheduleServiceTest.java
+                        │   │   └── impl
+                        │   │       └── DailyAgendaServiceImplTest.java
+                        │   ├── fixture
+                        │   │   └── DailyAgendaFixture.java
+                        │   └── presentation
+                        │       └── DailyAgendaControllerTest.java
+                        ├── mail
+                        │   └── application
+                        │       └── impl
+                        │           └── MailSenderServiceImplTest.java
+                        ├── member
+                        │   ├── application
+                        │   │   └── impl
+                        │   │       └── MemberServiceImplTest.java
+                        │   ├── fixture
+                        │   │   └── MemberFixture.java
+                        │   └── presentation
+                        │       └── MemberControllerTest.java
+                        └── util
+                            └── ControllerTestSupport.java
+```
+
+
 # 아키텍처 구조
 <img width="753" alt="image" src="https://github.com/rework-kr/REWORK-SERVER/assets/79193811/aea022e2-37e3-4e89-8328-d0297fb507c9">
 
