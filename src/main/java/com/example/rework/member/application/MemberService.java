@@ -1,5 +1,6 @@
 package com.example.rework.member.application;
 
+import com.example.rework.config.security.SecurityUtils;
 import com.example.rework.member.application.dto.MemberResponseDto;
 import com.example.rework.member.application.dto.MemeberRequestDto;
 import com.example.rework.member.domain.Member;
@@ -10,4 +11,6 @@ public interface MemberService {
     Member findMemberByUserId(String username);
     String renewAccessToken(String cookieRefreshToken, Authentication authentication);
     void memberLogout(String username);
+
+    boolean updatePassword(MemeberRequestDto.MemberUpdatePasswordRequestDto updatePasswordRequestDto, SecurityUtils securityUtils);
 }
