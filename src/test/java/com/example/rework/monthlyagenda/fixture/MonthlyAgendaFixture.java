@@ -2,6 +2,8 @@ package com.example.rework.monthlyagenda.fixture;
 
 import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaRequestDto;
 
+import java.time.LocalDateTime;
+
 public class MonthlyAgendaFixture {
     public static MonthlyAgendaRequestDto.CreateMonthlyAgendaRequestDto createAgenda(){
         return  MonthlyAgendaRequestDto.CreateMonthlyAgendaRequestDto.builder()
@@ -19,7 +21,7 @@ public class MonthlyAgendaFixture {
     public static MonthlyAgendaRequestDto.ReadMonthlyAgendaRequestDto readAgenda(){
         return MonthlyAgendaRequestDto.ReadMonthlyAgendaRequestDto.builder()
                 .year(2024)
-                .month(5)
+                .month(LocalDateTime.now().getMonthValue())
                 .build();
     }
 

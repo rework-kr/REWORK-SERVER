@@ -2,12 +2,15 @@ package com.example.rework.member.application.impl;
 
 import com.example.rework.auth.MemberRole;
 import com.example.rework.auth.entity.RefreshToken;
+import com.example.rework.auth.jwt.MemberDetails;
 import com.example.rework.auth.repository.RefreshTokenRepository;
 import com.example.rework.member.application.dto.MemberResponseDto.MemberCreateResponseDto;
+import com.example.rework.member.application.dto.MemeberRequestDto;
 import com.example.rework.member.application.dto.MemeberRequestDto.SignUpRequestDto;
 import com.example.rework.member.domain.Member;
 import com.example.rework.member.domain.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,15 +19,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -41,6 +41,18 @@ class MemberServiceImplTest {
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+
+    @BeforeEach
+    void SecurityUserTest() {
+        Member member = getMember();
+
+        MemberDetails memberDetails = new MemberDetails(member);
+
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(memberDetails, null, memberDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
 
 
     @DisplayName("유저를 생성하게되면 memberId,name,userId,memberRole을 반환한다.")
@@ -95,9 +107,33 @@ class MemberServiceImplTest {
         Assertions.assertThat(refreshTokenRepository.findById(getRefreshToken().getId())).isEqualTo(null);
     }
 
+    @DisplayName("회원은 비밀번호를 변경할 수 있다.")
+    @Test
+    void testUserCanChangePassword() throws IOException {
+        //given
+        given(memberRepository.findByUserId(any()))
+                .willReturn(Optional.ofNullable(getMember()));
+        given(bCryptPasswordEncoder.matches(any(), any()))
+                .willReturn(true);
+        MemeberRequestDto.MemberUpdatePasswordRequestDto memberPasswordUpdateReq = getMemberPasswordUpdateReq();
+
+        //when
+        boolean result = memberService.updatePassword(memberPasswordUpdateReq, any());
+        //then
+        Assertions.assertThat(result).isEqualTo(true);
+    }
 
 
 
+
+
+    private MemeberRequestDto.MemberUpdatePasswordRequestDto getMemberPasswordUpdateReq() throws IOException {
+
+        return MemeberRequestDto.MemberUpdatePasswordRequestDto.builder()
+                .newPassword("test12345")
+                .oldPassword("test1234")
+                .build();
+    }
     private SignUpRequestDto getMemberCreateReq() throws IOException {
 
         return SignUpRequestDto.builder()
@@ -124,16 +160,6 @@ class MemberServiceImplTest {
         ReflectionTestUtils.setField(refreshToken, "id", "1");
 
         return refreshToken;
-    }
-
-    public Authentication getAuthentication() {
-        List<String> roles = List.of("ROLE_MEMBER","ROLE_ADMIN");
-        List<SimpleGrantedAuthority> authorities = roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-        User principal = new User("kbsserver@naver.com", "", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
 }

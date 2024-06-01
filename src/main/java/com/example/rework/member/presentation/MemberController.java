@@ -3,10 +3,10 @@ package com.example.rework.member.presentation;
 import com.example.rework.auth.cookie.CookieUtil;
 import com.example.rework.auth.jwt.JwtProvider;
 import com.example.rework.auth.service.RefreshTokenService;
+import com.example.rework.config.security.SecurityUtils;
 import com.example.rework.global.common.CommonResDto;
 import com.example.rework.global.error.InvalidTokenException;
 import com.example.rework.member.application.MemberService;
-import com.example.rework.member.application.dto.MemberResponseDto;
 import com.example.rework.member.application.dto.MemeberRequestDto;
 import com.example.rework.member.restapi.MemberApi;
 import jakarta.servlet.http.HttpServletRequest;
@@ -76,6 +76,14 @@ public class MemberController implements MemberApi {
         }
         return new ResponseEntity<>(
                 new CommonResDto<>(1,"회원로그아웃성공",""),HttpStatus.OK
+        );
+    }
+
+    @Override
+    public ResponseEntity<CommonResDto<?>> updatePassword(MemeberRequestDto.MemberUpdatePasswordRequestDto updatePasswordRequestDto, SecurityUtils securityUtils) {
+        boolean result = memberService.updatePassword(updatePasswordRequestDto, securityUtils);
+        return new ResponseEntity<>(
+                new CommonResDto<>(1,"패스워드변경성공",result),HttpStatus.OK
         );
     }
 

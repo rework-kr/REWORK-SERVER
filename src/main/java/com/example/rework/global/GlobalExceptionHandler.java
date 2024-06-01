@@ -71,6 +71,29 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 패스워드 불일치 에러
+     */
+    @ExceptionHandler(PasswordUnchangedException.class)
+    protected ResponseEntity<?> passwordUnchangedException(PasswordUnchangedException ex) {
+        log.error("PasswordUnchangedException :: ");
+
+        ErrorCodes errorCode = ErrorCodes.PASSWORD_UNCHANGED_EXCEPTION;
+
+
+        ErrorResponse error = ErrorResponse.builder()
+                .status(errorCode.getStatus().value())
+                .message(errorCode.getMessage())
+                .code(errorCode.getCode())
+                .build();
+
+        CommonResponse response = CommonResponse.builder()
+                .success(false)
+                .error(error)
+                .build();
+
+        return new ResponseEntity<>(response, errorCode.getStatus());
+    }
+    /**
      * discord 전송 오류
      */
     @ExceptionHandler(InvalidDiscordMessage.class)

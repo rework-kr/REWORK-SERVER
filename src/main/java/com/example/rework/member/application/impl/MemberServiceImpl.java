@@ -4,10 +4,14 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.rework.auth.entity.RefreshToken;
 import com.example.rework.auth.jwt.JwtProvider;
 import com.example.rework.auth.repository.RefreshTokenRepository;
+import com.example.rework.config.security.SecurityUtils;
 import com.example.rework.global.error.DuplicateAccountException;
 import com.example.rework.global.error.InvalidTokenException;
+import com.example.rework.global.error.PasswordNotMatchException;
+import com.example.rework.global.error.PasswordUnchangedException;
 import com.example.rework.member.application.MemberService;
 import com.example.rework.member.application.dto.MemberResponseDto;
+import com.example.rework.member.application.dto.MemeberRequestDto;
 import com.example.rework.member.application.dto.MemeberRequestDto.SignUpRequestDto;
 import com.example.rework.member.domain.Member;
 import com.example.rework.member.domain.repository.MemberRepository;
@@ -18,6 +22,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -68,6 +74,24 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void memberLogout(String username) {
         refreshTokenRepository.deleteById(username);
+    }
+
+    @Override
+    @Transactional
+    public boolean updatePassword(MemeberRequestDto.MemberUpdatePasswordRequestDto updatePasswordRequestDto, SecurityUtils securityUtils) {
+        Optional<Member> curMember = memberRepository.findByUserId(securityUtils.getCurrentUserId());
+        String newPassword = updatePasswordRequestDto.getNewPassword();
+        String oldPassword = updatePasswordRequestDto.getOldPassword();
+
+        if(newPassword.equals(oldPassword)){
+            throw new PasswordUnchangedException("기존 패스워드와 동일합니다.");
+        }
+        if(!bCryptPasswordEncoder.matches(oldPassword,curMember.get().getPassword())){
+            throw new PasswordNotMatchException("패스워드가 일치하지 않습니다.");
+        }
+
+        curMember.get().updatePassword(bCryptPasswordEncoder.encode(newPassword));
+        return true;
     }
 
 

@@ -33,4 +33,7 @@ public class Member extends BaseTimeEntity {
     @Column(length = 30,nullable = false)
     private boolean state;
 
+    public void updatePassword(String password) {
+        this.password=password;
+    }
 }
