@@ -12,4 +12,12 @@ public class MemberFixture {
                 .build();
 
     }
+
+    public static MemeberRequestDto.MemberUpdatePasswordRequestDto updatePassword(String mail, String newPassword, String oldPassword) {
+        return MemeberRequestDto.MemberUpdatePasswordRequestDto.builder()
+                .newPassword(newPassword)
+                .oldPassword(oldPassword)
+                .userId(mail)
+                .build();
+    }
 }

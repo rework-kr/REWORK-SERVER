@@ -1,10 +1,10 @@
 package com.example.rework.monthlyagenda.presentation;
 
+import com.example.rework.auth.MemberRole;
+import com.example.rework.member.domain.Member;
 import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaRequestDto;
 import com.example.rework.monthlyagenda.domain.MonthlyAgenda;
 import com.example.rework.monthlyagenda.fixture.MonthlyAgendaFixture;
-import com.example.rework.auth.MemberRole;
-import com.example.rework.member.domain.Member;
 import com.example.rework.util.ControllerTestSupport;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,12 +12,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -116,11 +117,14 @@ public class MonthlyAgendaControllerTest extends ControllerTestSupport {
         boolean state = resultData.get("state").asBoolean();
         String createTime = resultData.get("createTime").asText();
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        LocalDateTime nowInKorea = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        String formattedNow = nowInKorea.format(formatter);
         assertAll(
                 () -> assertThat(id).isNotNull(),
                 () -> assertThat(todo).isEqualTo("이번달아젠다"),
                 () -> assertThat(state).isFalse(),
-                () -> assertThat(createTime).isEqualTo("2024-05")
+                () -> assertThat(createTime).isEqualTo(formattedNow)
         );
     }
 

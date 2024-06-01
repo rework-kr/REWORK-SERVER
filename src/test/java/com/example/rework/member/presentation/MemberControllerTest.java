@@ -8,6 +8,8 @@ import com.example.rework.member.application.dto.MemeberRequestDto.SignUpRequest
 import com.example.rework.member.domain.Member;
 import com.example.rework.member.fixture.MemberFixture;
 import com.example.rework.util.ControllerTestSupport;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,15 +20,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -185,6 +190,40 @@ class MemberControllerTest extends ControllerTestSupport {
                         .content(objectMapper.writeValueAsString(memberLoginRequestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").isNotEmpty());
+    }
+
+
+    @DisplayName("회원가입한 사용자는 비밀번호를 변경할 수 있다.")
+    @Test
+    @WithMockUser(username = "kbsserver@naver.com")
+    void updatePasswordTest() throws Exception {
+        //given
+        String url = "/api/v1/members/password";
+        String newPassword="test12345";
+        String oldPassword=password;
+        MemeberRequestDto.MemberUpdatePasswordRequestDto memberUpdatePasswordRequestDto = MemberFixture.updatePassword("kbsserver@naver.com", newPassword,oldPassword);
+
+        //when
+        MvcResult mvcResult = mockMvc.perform(put(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .content(objectMapper.writeValueAsString(memberUpdatePasswordRequestDto))
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        //then
+        mvcResult.getResponse().setContentType("application/json;charset=UTF-8");
+        String result = mvcResult.getResponse().getContentAsString();
+        ObjectMapper objectMapper1 = new ObjectMapper();
+
+        JsonNode jsonNode = objectMapper1.readTree(result);
+        boolean dataResult = jsonNode.get("data").asBoolean();
+
+        assertAll(
+                () -> assertThat(dataResult).isEqualTo(true)
+        );
     }
 
 }
