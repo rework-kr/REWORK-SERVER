@@ -4,11 +4,15 @@ import com.example.rework.auth.MemberRole;
 import com.example.rework.auth.entity.RefreshToken;
 import com.example.rework.auth.jwt.MemberDetails;
 import com.example.rework.auth.repository.RefreshTokenRepository;
+import com.example.rework.discord.WebhookService;
+import com.example.rework.member.application.dto.MemberResponseDto;
 import com.example.rework.member.application.dto.MemberResponseDto.MemberCreateResponseDto;
 import com.example.rework.member.application.dto.MemeberRequestDto;
 import com.example.rework.member.application.dto.MemeberRequestDto.SignUpRequestDto;
 import com.example.rework.member.domain.Member;
+import com.example.rework.member.domain.NonMemberEmail;
 import com.example.rework.member.domain.repository.MemberRepository;
+import com.example.rework.member.domain.repository.NonMemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,9 +25,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -37,9 +43,13 @@ class MemberServiceImplTest {
     @Mock
     private MemberRepository memberRepository;
     @Mock
+    private NonMemberRepository nonMemberRepository;
+    @Mock
     private RefreshTokenRepository refreshTokenRepository;
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Mock
+    private WebhookService webhookService;
 
 
     @BeforeEach
@@ -124,7 +134,50 @@ class MemberServiceImplTest {
     }
 
 
+    @DisplayName("admin유저는 승인대기 중인 비회원의 이메일리스트를 확인할 수 있다.")
+    @WithMockUser(username = "kbsserver@naver.com", authorities = {"ADMIN"})
+    @Test
+    void viewPendingNonMemberEmails() throws IOException {
+        //given
+        given(nonMemberRepository.findAllByIsAccepted(false))
+                .willReturn(getNonMemberEmails());
+        //when
+        List<MemberResponseDto.NonMemberEmailListResponseDto> nonMemberEmailListResponseDtos = memberService.adminNonMemberEamilList(any());
 
+
+        //then
+        Assertions.assertThat(nonMemberEmailListResponseDtos.get(0).getEmail()).isEqualTo("kbsserver@naver.com");
+        Assertions.assertThat(nonMemberEmailListResponseDtos.get(1).getEmail()).isEqualTo("kbsserver2@naver.com");
+
+    }
+
+    @DisplayName("회원가입을 위해서 이메일을 등록하게 되면 NonMember테이블에 이메일이 쌓이게 되고 admin유저에게 알림이 전송된다.")
+    @Test
+    void registerEmailAndNotifyAdmin() throws IOException {
+        //given
+        String initialEmail="kbsserver@naver.com";
+        MemeberRequestDto.RegisterEmailRequestDto registerEmailRequestDto = MemeberRequestDto.RegisterEmailRequestDto.builder()
+                .email(initialEmail)
+                .build();
+        given(nonMemberRepository.save(any())).willReturn(getNonMember());
+        given(webhookService.sendDiscordNotificationForNonMemberRegister(any())).willReturn(true);
+
+        //when
+        boolean result = memberService.registerEmail(registerEmailRequestDto);
+
+        //then
+        Assertions.assertThat(result).isEqualTo(true);
+
+    }
+
+    private List<NonMemberEmail> getNonMemberEmails() {
+        return List.of(NonMemberEmail.builder()
+                .email("kbsserver@naver.com")
+                .build(),
+                NonMemberEmail.builder()
+                        .email("kbsserver2@naver.com")
+                        .build());
+    }
 
 
     private MemeberRequestDto.MemberUpdatePasswordRequestDto getMemberPasswordUpdateReq() throws IOException {
@@ -153,6 +206,14 @@ class MemberServiceImplTest {
         return member;
     }
 
+    private NonMemberEmail getNonMember(){
+        NonMemberEmail nonMemberEmail = NonMemberEmail.builder()
+                .isAccepted(false)
+                .email("kbsserver@naver.com")
+                .build();
+        ReflectionTestUtils.setField(nonMemberEmail, "id", 1L);
+        return nonMemberEmail;
+    }
     private RefreshToken getRefreshToken(){
         RefreshToken refreshToken = RefreshToken.builder()
                 .token("refreshToken")
