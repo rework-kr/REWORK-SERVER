@@ -46,6 +46,7 @@ spring:
 discord:
   webhook:
     url: ${discord_webhook_url}
+    wating-approve: ${discord.webhook.url2}
 jwt:
   secret-key: mobile_app_1234567890
 

@@ -1,11 +1,14 @@
 package com.example.rework.member.presentation;
 
 import com.example.rework.auth.MemberRole;
+import com.example.rework.discord.WebhookService;
 import com.example.rework.member.application.MemberService;
 import com.example.rework.member.application.dto.MemberResponseDto;
 import com.example.rework.member.application.dto.MemeberRequestDto;
 import com.example.rework.member.application.dto.MemeberRequestDto.SignUpRequestDto;
 import com.example.rework.member.domain.Member;
+import com.example.rework.member.domain.NonMemberEmail;
+import com.example.rework.member.domain.repository.NonMemberRepository;
 import com.example.rework.member.fixture.MemberFixture;
 import com.example.rework.util.ControllerTestSupport;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -17,10 +20,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -28,10 +34,11 @@ import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,6 +54,10 @@ class MemberControllerTest extends ControllerTestSupport {
     @Autowired
     EntityManager em;
 
+    @Mock
+    private NonMemberRepository nonMemberRepository;
+
+
     private static Member initialMember;
 
     private static final String password="anstn1234@";
@@ -61,6 +72,7 @@ class MemberControllerTest extends ControllerTestSupport {
                 .role(MemberRole.MEMBER)
                 .state(true)
                 .build();
+
         initialMember = memberRepository.saveAndFlush(member);
     }
     @AfterEach
@@ -112,14 +124,8 @@ class MemberControllerTest extends ControllerTestSupport {
     void loginMember() throws Exception {
         //given
         String url = "/api/v1/members/login";
-
-        SignUpRequestDto signUpRequestDto = MemberFixture.createMember("kbsserver3@naver.com");
-
-
-        memberService.createMember(signUpRequestDto);
-
         MemeberRequestDto.MemberLoginRequestDto memberLoginRequestDto = MemeberRequestDto.MemberLoginRequestDto.builder()
-                .userId("kbsserver3@naver.com")
+                .userId("kbsserver@naver.com")
                 .password("anstn1234@")
                 .build();
 
@@ -224,6 +230,34 @@ class MemberControllerTest extends ControllerTestSupport {
         assertAll(
                 () -> assertThat(dataResult).isEqualTo(true)
         );
+    }
+
+
+    @DisplayName("admin유저는 회원가입 승인 대기중인 이메일 리스트를 조회할 수 있다.")
+    @Test
+    @WithMockUser(username = "kbsserver@naver.com",authorities = "ADMIN")
+    void shouldAllowAdminToViewPendingApprovalEmailList() throws Exception {
+
+        //given
+        String url = "/api/v1/members/admin/register-email";
+
+        //when
+        MvcResult mvcResult = mockMvc.perform(get(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    private NonMemberEmail getNonMember(){
+        NonMemberEmail nonMemberEmail = NonMemberEmail.builder()
+                .isAccepted(false)
+                .email("kbsserver@naver.com")
+                .build();
+        ReflectionTestUtils.setField(nonMemberEmail, "id", 1L);
+        return nonMemberEmail;
     }
 
 }

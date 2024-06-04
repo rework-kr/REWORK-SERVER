@@ -20,4 +20,10 @@ public class MemberFixture {
                 .userId(mail)
                 .build();
     }
+
+    public static MemeberRequestDto.RegisterEmailRequestDto registerEmailRequestDto(String email) {
+        return MemeberRequestDto.RegisterEmailRequestDto.builder()
+                .email(email)
+                .build();
+    }
 }
