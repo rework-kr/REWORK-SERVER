@@ -45,7 +45,7 @@ class MailSenderServiceImplTest {
         given(memberService.createMember(any())).willReturn(getMemberDto());
         given(memberRepository.findByUserId(any())).willReturn(Optional.empty());
         given(mailSenderApi.sendRandomPasswordMail(any(), any())).willReturn(true);
-        given(webhookService.sendDiscordNotification(any())).willReturn(true);
+        given(webhookService.sendDiscordNotificationForRegister(any())).willReturn(true);
         // when
         boolean result = mailSenderService.sendMail(sendMailDto);
         //then

@@ -30,7 +30,8 @@ public class MailSenderApi {
 
         //템플릿에 전달할 데이터 설정
         Context context = new Context();
-        context.setVariable("randomNumber", randomPassword);
+        context.setVariable("randompassword", randomPassword);
+        context.setVariable("email", sendMailDto.getEmail());
 
         //메일 내용 설정 : 템플릿 프로세스
         String html = templateEngine.process("acceptEmail.html",context);
