@@ -7,6 +7,8 @@ import com.example.rework.member.application.dto.MemberResponseDto;
 import com.example.rework.member.application.dto.MemeberRequestDto;
 import com.example.rework.member.application.dto.MemeberRequestDto.SignUpRequestDto;
 import com.example.rework.member.domain.Member;
+import com.example.rework.member.domain.NonMemberEmail;
+import com.example.rework.member.domain.repository.NonMemberRepository;
 import com.example.rework.member.fixture.MemberFixture;
 import com.example.rework.util.ControllerTestSupport;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -24,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -52,7 +55,8 @@ class MemberControllerTest extends ControllerTestSupport {
     EntityManager em;
 
     @Mock
-    private WebhookService webhookService;
+    private NonMemberRepository nonMemberRepository;
+
 
     private static Member initialMember;
 
@@ -61,7 +65,6 @@ class MemberControllerTest extends ControllerTestSupport {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         Member member = Member.builder()
                 .name("김민우1234")
                 .password(bCryptPasswordEncoder.encode(password))
@@ -69,6 +72,7 @@ class MemberControllerTest extends ControllerTestSupport {
                 .role(MemberRole.MEMBER)
                 .state(true)
                 .build();
+
         initialMember = memberRepository.saveAndFlush(member);
     }
     @AfterEach
@@ -120,14 +124,8 @@ class MemberControllerTest extends ControllerTestSupport {
     void loginMember() throws Exception {
         //given
         String url = "/api/v1/members/login";
-
-        SignUpRequestDto signUpRequestDto = MemberFixture.createMember("kbsserver3@naver.com");
-
-
-        memberService.createMember(signUpRequestDto);
-
         MemeberRequestDto.MemberLoginRequestDto memberLoginRequestDto = MemeberRequestDto.MemberLoginRequestDto.builder()
-                .userId("kbsserver3@naver.com")
+                .userId("kbsserver@naver.com")
                 .password("anstn1234@")
                 .build();
 
@@ -251,6 +249,15 @@ class MemberControllerTest extends ControllerTestSupport {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
+    }
+
+    private NonMemberEmail getNonMember(){
+        NonMemberEmail nonMemberEmail = NonMemberEmail.builder()
+                .isAccepted(false)
+                .email("kbsserver@naver.com")
+                .build();
+        ReflectionTestUtils.setField(nonMemberEmail, "id", 1L);
+        return nonMemberEmail;
     }
 
 }

@@ -76,6 +76,8 @@ class MemberServiceImplTest {
 
         given(memberRepository.save(any(Member.class)))
                 .willReturn(getMember());
+        given(nonMemberRepository.findByEmail(any())).willReturn(getNonMember());
+
 
 
 

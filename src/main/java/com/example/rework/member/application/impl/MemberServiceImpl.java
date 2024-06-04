@@ -52,6 +52,8 @@ public class MemberServiceImpl implements MemberService {
         SignUpRequestDto encodingDto = encodingPassword(signUpRequestDto);
         //회원 저장
         Member member = memberRepository.save(encodingDto.toEntity());
+        NonMemberEmail nonMemberEmail = nonMemberRepository.findByEmail(member.getUserId());
+        nonMemberEmail.updateIsAccepted(true);
         return MemberResponseDto.MemberCreateResponseDto.builder()
                 .memberRole(String.valueOf(member.getRole()))
                 .userId(member.getUserId())

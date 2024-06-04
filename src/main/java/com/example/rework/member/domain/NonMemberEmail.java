@@ -20,4 +20,8 @@ public class NonMemberEmail extends BaseTimeEntity {
     // 회원가입 승인 여부
     @Column(name = "IS_ACCEPTED", nullable = false)
     private boolean isAccepted;
+
+    public void updateIsAccepted(boolean state) {
+        this.isAccepted = state;
+    }
 }
