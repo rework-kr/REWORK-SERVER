@@ -1,6 +1,7 @@
 package com.example.rework.member.presentation;
 
 import com.example.rework.auth.MemberRole;
+import com.example.rework.discord.WebhookService;
 import com.example.rework.member.application.MemberService;
 import com.example.rework.member.application.dto.MemberResponseDto;
 import com.example.rework.member.application.dto.MemeberRequestDto;
@@ -17,6 +18,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,10 +31,11 @@ import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,6 +51,9 @@ class MemberControllerTest extends ControllerTestSupport {
     @Autowired
     EntityManager em;
 
+    @Mock
+    private WebhookService webhookService;
+
     private static Member initialMember;
 
     private static final String password="anstn1234@";
@@ -54,6 +61,7 @@ class MemberControllerTest extends ControllerTestSupport {
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
         Member member = Member.builder()
                 .name("김민우1234")
                 .password(bCryptPasswordEncoder.encode(password))
@@ -224,6 +232,25 @@ class MemberControllerTest extends ControllerTestSupport {
         assertAll(
                 () -> assertThat(dataResult).isEqualTo(true)
         );
+    }
+
+
+    @DisplayName("admin유저는 회원가입 승인 대기중인 이메일 리스트를 조회할 수 있다.")
+    @Test
+    @WithMockUser(username = "kbsserver@naver.com",authorities = "ADMIN")
+    void shouldAllowAdminToViewPendingApprovalEmailList() throws Exception {
+
+        //given
+        String url = "/api/v1/members/admin/register-email";
+
+        //when
+        MvcResult mvcResult = mockMvc.perform(get(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
     }
 
 }

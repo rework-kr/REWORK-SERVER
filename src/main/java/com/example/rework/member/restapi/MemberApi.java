@@ -64,4 +64,25 @@ public interface MemberApi {
             @RequestBody MemeberRequestDto.MemberUpdatePasswordRequestDto updatePasswordRequestDto,
             SecurityUtils securityUtils
             );
+
+
+    @Operation(
+            summary = "초기 회원가입을 위한 이메일 입력하는 API입니다.",
+            description =
+                    "어떤 유저든 이메일을 등록하여 ADMIN에게 회원가입 요청을 할 수 있습니다."
+    )
+    @PostMapping("/register-email")
+    ResponseEntity<CommonResDto<?>> nonMemberRegisterEmail(
+            @RequestBody MemeberRequestDto.RegisterEmailRequestDto registerEmailRequestDto
+    );
+
+    @Operation(
+            summary = "admin이 회원가입을 승인하는 API입니다.",
+            description =
+                    "admin이 회원가입을 승인하는 API입니다."
+    )
+    @GetMapping("/admin/register-email")
+    ResponseEntity<CommonResDto<?>> adminNonMemberEamilList(
+            SecurityUtils securityUtils
+    );
 }

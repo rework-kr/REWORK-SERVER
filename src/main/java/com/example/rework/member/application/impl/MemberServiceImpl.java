@@ -5,6 +5,7 @@ import com.example.rework.auth.entity.RefreshToken;
 import com.example.rework.auth.jwt.JwtProvider;
 import com.example.rework.auth.repository.RefreshTokenRepository;
 import com.example.rework.config.security.SecurityUtils;
+import com.example.rework.discord.WebhookService;
 import com.example.rework.global.error.DuplicateAccountException;
 import com.example.rework.global.error.InvalidTokenException;
 import com.example.rework.global.error.PasswordNotMatchException;
@@ -14,7 +15,9 @@ import com.example.rework.member.application.dto.MemberResponseDto;
 import com.example.rework.member.application.dto.MemeberRequestDto;
 import com.example.rework.member.application.dto.MemeberRequestDto.SignUpRequestDto;
 import com.example.rework.member.domain.Member;
+import com.example.rework.member.domain.NonMemberEmail;
 import com.example.rework.member.domain.repository.MemberRepository;
+import com.example.rework.member.domain.repository.NonMemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -23,7 +26,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -35,6 +40,8 @@ public class MemberServiceImpl implements MemberService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtProvider jwtProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final NonMemberRepository nonMemberRepository;
+    private final WebhookService webhookService;
 
     @Override
     @Transactional
@@ -92,6 +99,30 @@ public class MemberServiceImpl implements MemberService {
 
         curMember.get().updatePassword(bCryptPasswordEncoder.encode(newPassword));
         return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean registerEmail(MemeberRequestDto.RegisterEmailRequestDto registerEmailRequestDto) {
+        String email = registerEmailRequestDto.getEmail();
+        NonMemberEmail nonMemberEmail = NonMemberEmail.builder()
+                .email(email)
+                .build();
+
+        nonMemberRepository.save(nonMemberEmail);
+        webhookService.sendDiscordNotificationForNonMemberRegister(email);
+
+        return true;
+    }
+
+    @Override
+    public List<MemberResponseDto.NonMemberEmailListResponseDto> adminNonMemberEamilList(SecurityUtils securityUtils) {
+        Optional<Member> curMember = memberRepository.findByUserId(securityUtils.getCurrentUserId());
+        // 회원가입 승인 대기중인 이메일 리스트
+        List<NonMemberEmail> nonMemberEmailList = nonMemberRepository.findAllByIsAccepted(false);
+
+        List<MemberResponseDto.NonMemberEmailListResponseDto> result = nonMemberEmailList.stream().map(MemberResponseDto.NonMemberEmailListResponseDto::new).collect(Collectors.toList());
+        return result;
     }
 
 
