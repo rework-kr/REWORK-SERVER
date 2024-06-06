@@ -7,6 +7,7 @@ import com.example.rework.auth.repository.RefreshTokenRepository;
 import com.example.rework.discord.WebhookService;
 import com.example.rework.member.application.dto.MemberResponseDto;
 import com.example.rework.member.application.dto.MemberResponseDto.MemberCreateResponseDto;
+import com.example.rework.member.application.dto.MemberResponseDto.MemberInfoResponseDto;
 import com.example.rework.member.application.dto.MemeberRequestDto;
 import com.example.rework.member.application.dto.MemeberRequestDto.SignUpRequestDto;
 import com.example.rework.member.domain.Member;
@@ -32,6 +33,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -169,6 +172,26 @@ class MemberServiceImplTest {
 
         //then
         Assertions.assertThat(result).isEqualTo(true);
+
+    }
+
+    @DisplayName("회원의 정보를 조회할 수 있다.")
+    @Test
+    void readMemberInfoTest() throws IOException {
+        //given
+        given(memberRepository.findByUserId(any()))
+                .willReturn(Optional.ofNullable(getMember()));
+        //when
+        MemberInfoResponseDto memberInfoResponseDto = memberService.readMemberInfo(any());
+
+        //then
+        assertAll(
+                () -> assertThat(memberInfoResponseDto.getMemberRole()).isEqualTo(MemberRole.MEMBER),
+                () -> assertThat(memberInfoResponseDto.getEmail()).isEqualTo("kbsserver@naver.com"),
+                () -> assertThat(memberInfoResponseDto.isInitialPasswordUpdateState()).isEqualTo(false)
+        );
+
+
 
     }
 
