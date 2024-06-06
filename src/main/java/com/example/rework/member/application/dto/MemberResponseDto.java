@@ -2,6 +2,7 @@ package com.example.rework.member.application.dto;
 
 
 
+import com.example.rework.auth.MemberRole;
 import com.example.rework.member.domain.Member;
 import com.example.rework.member.domain.NonMemberEmail;
 import jakarta.validation.constraints.NotEmpty;
@@ -18,6 +19,17 @@ public class MemberResponseDto {
 	public static class MemberLoginResponseDto {
 
 		String accessToken;
+	}
+
+	@Getter
+	@AllArgsConstructor
+	@Builder
+	@NoArgsConstructor
+	public static class MemberInfoResponseDto {
+
+		String email;
+		boolean initialPasswordUpdateState;
+		MemberRole memberRole;
 	}
 
 	@Getter

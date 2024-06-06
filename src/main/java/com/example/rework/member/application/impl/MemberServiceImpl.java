@@ -127,6 +127,18 @@ public class MemberServiceImpl implements MemberService {
         return result;
     }
 
+    @Override
+    public MemberResponseDto.MemberInfoResponseDto readMemberInfo(SecurityUtils securityUtils) {
+        Optional<Member> curMember = memberRepository.findByUserId(securityUtils.getCurrentUserId());
+        Member member = curMember.get();
+
+        return MemberResponseDto.MemberInfoResponseDto.builder()
+                .initialPasswordUpdateState(member.isInitialPasswordState())
+                .memberRole(member.getRole())
+                .email(member.getUserId())
+                .build();
+    }
+
 
     @Override
     public Member findMemberByUserId(String username) {

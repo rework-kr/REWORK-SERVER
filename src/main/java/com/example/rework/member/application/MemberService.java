@@ -2,6 +2,7 @@ package com.example.rework.member.application;
 
 import com.example.rework.config.security.SecurityUtils;
 import com.example.rework.member.application.dto.MemberResponseDto;
+import com.example.rework.member.application.dto.MemberResponseDto.MemberInfoResponseDto;
 import com.example.rework.member.application.dto.MemeberRequestDto;
 import com.example.rework.member.domain.Member;
 import org.springframework.security.core.Authentication;
@@ -20,4 +21,5 @@ public interface MemberService {
 
     List<MemberResponseDto.NonMemberEmailListResponseDto> adminNonMemberEamilList(SecurityUtils securityUtils);
 
+    MemberInfoResponseDto readMemberInfo(SecurityUtils securityUtils);
 }

@@ -32,8 +32,11 @@ public class Member extends BaseTimeEntity {
     private MemberRole role; // ADMIN 관리자 - MANAGER 운영자 - MEMBER 일반회원
     @Column(length = 30,nullable = false)
     private boolean state;
-
+    @Column(length = 30,nullable = false)
+    @Builder.Default
+    private boolean initialPasswordState=false;
     public void updatePassword(String password) {
         this.password=password;
+        this.initialPasswordState=true;
     }
 }

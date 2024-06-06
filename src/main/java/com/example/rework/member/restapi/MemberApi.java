@@ -77,12 +77,22 @@ public interface MemberApi {
     );
 
     @Operation(
-            summary = "admin이 회원가입을 승인하는 API입니다.",
+            summary = "admin이 이메일 리스트를 확인하는 API입니다.",
             description =
-                    "admin이 회원가입을 승인하는 API입니다."
+                    "admin이 이메일 리스트를 확인하는 API입니다."
     )
     @GetMapping("/admin/register-email")
     ResponseEntity<CommonResDto<?>> adminNonMemberEamilList(
+            SecurityUtils securityUtils
+    );
+
+    @Operation(
+            summary = "유저의 정보를 조회하는 API 입니다.",
+            description =
+                    "Authorization header bearer token을 통해 유저의 정보를 조회하는 API 입니다."
+    )
+    @GetMapping("/info")
+    ResponseEntity<CommonResDto<?>> readMemberInfo(
             SecurityUtils securityUtils
     );
 }
