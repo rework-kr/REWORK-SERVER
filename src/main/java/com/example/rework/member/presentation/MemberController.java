@@ -8,6 +8,7 @@ import com.example.rework.global.common.CommonResDto;
 import com.example.rework.global.error.InvalidTokenException;
 import com.example.rework.member.application.MemberService;
 import com.example.rework.member.application.dto.MemberResponseDto;
+import com.example.rework.member.application.dto.MemberResponseDto.MemberInfoResponseDto;
 import com.example.rework.member.application.dto.MemeberRequestDto;
 import com.example.rework.member.restapi.MemberApi;
 import jakarta.servlet.http.HttpServletRequest;
@@ -104,6 +105,14 @@ public class MemberController implements MemberApi {
         List<MemberResponseDto  .NonMemberEmailListResponseDto> result = memberService.adminNonMemberEamilList(securityUtils);
         return new ResponseEntity<>(
                 new CommonResDto<>(1,"승인되지 않은 이메일리스트 조회성공",result),HttpStatus.OK
+        );
+    }
+
+    @Override
+    public ResponseEntity<CommonResDto<?>> readMemberInfo(SecurityUtils securityUtils) {
+        MemberInfoResponseDto memberInfoResponseDto = memberService.readMemberInfo(securityUtils);
+        return new ResponseEntity<>(
+                new CommonResDto<>(1,"유저 정보조회 성공",memberInfoResponseDto),HttpStatus.OK
         );
     }
 

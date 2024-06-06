@@ -13,6 +13,7 @@ import com.example.rework.member.fixture.MemberFixture;
 import com.example.rework.util.ControllerTestSupport;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Supplier;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -250,6 +251,43 @@ class MemberControllerTest extends ControllerTestSupport {
                 .andExpect(status().isOk())
                 .andReturn();
     }
+    @DisplayName("유저는 자신의 정보를 확인할 수 있다.")
+    @Test
+    @WithMockUser(username = "kbsserver@naver.com",authorities = "ADMIN")
+    void test() throws Exception {
+        //given
+        String url = "/api/v1/members/info";
+
+        //when
+        MvcResult mvcResult = mockMvc.perform(get(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        //then
+        mvcResult.getResponse().setContentType("application/json;charset=UTF-8");
+        String result = mvcResult.getResponse().getContentAsString();
+        ObjectMapper objectMapper1 = new ObjectMapper();
+
+        JsonNode jsonNode = objectMapper1.readTree(result);
+        String email = jsonNode.get("data").get("email").asText();
+        boolean initialPasswordUpdateState = jsonNode.get("data").get("initialPasswordUpdateState").asBoolean();
+        String memberRole = jsonNode.get("data").get("memberRole").asText();
+
+
+        assertAll(
+                () -> assertThat(email).isEqualTo("kbsserver@naver.com"),
+                () -> assertThat(initialPasswordUpdateState).isEqualTo(false),
+                () -> assertThat(memberRole).isEqualTo(MemberRole.MEMBER.toString())
+        );
+
+
+    }
+
+
 
     private NonMemberEmail getNonMember(){
         NonMemberEmail nonMemberEmail = NonMemberEmail.builder()
