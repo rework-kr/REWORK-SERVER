@@ -16,6 +16,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -54,7 +55,7 @@ public class MonthlyAgendaControllerTest extends ControllerTestSupport {
     @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
     void createTodo() throws Exception {
         //given
-        String url = "/api/v1/monthlyAgenda/";
+        String url = "/api/v1/monthlyAgenda";
         MonthlyAgendaRequestDto.CreateMonthlyAgendaRequestDto createMonthlyAgendaRequestDto = MonthlyAgendaFixture.createAgenda();
 
         //when
@@ -90,14 +91,17 @@ public class MonthlyAgendaControllerTest extends ControllerTestSupport {
     @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
     void readTodo() throws Exception {
         //given
-        String url = "/api/v1/monthlyAgenda/";
+        String url = "/api/v1/monthlyAgenda";
 
-        MonthlyAgendaRequestDto.ReadMonthlyAgendaRequestDto readMonthlyAgendaRequestDto = MonthlyAgendaFixture.readAgenda();
+        LocalDate Today = LocalDate.now();
+        int year = Today.getYear();
+        int month = Today.getMonthValue();
 
         //when
         MvcResult mvcResult = mockMvc.perform(get(url)
+                        .param("year",String.valueOf(year))
+                        .param("month",String.valueOf(month))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(readMonthlyAgendaRequestDto))
                         .characterEncoding(StandardCharsets.UTF_8)
                 )
                 .andDo(print())
@@ -133,7 +137,7 @@ public class MonthlyAgendaControllerTest extends ControllerTestSupport {
     @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
     void updateTodo() throws Exception {
         //given
-        String url = "/api/v1/monthlyAgenda/";
+        String url = "/api/v1/monthlyAgenda";
 
         MonthlyAgendaRequestDto.UpdateMonthlyAgendaRequestDto updateMonthlyAgendaRequestDto = MonthlyAgendaFixture.updateAgenda(monthlyAgendaId);
 
@@ -170,7 +174,7 @@ public class MonthlyAgendaControllerTest extends ControllerTestSupport {
     @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
     void deleteTodo() throws Exception {
         //given
-        String url = "/api/v1/monthlyAgenda/?monthlyAgendaId=" + monthlyAgendaId;
+        String url = "/api/v1/monthlyAgenda?monthlyAgendaId=" + monthlyAgendaId;
 
         //when
         MvcResult mvcResult = mockMvc.perform(delete(url)

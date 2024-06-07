@@ -23,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -80,7 +81,9 @@ public class MonthlyAgendaServiceImplTest {
     @Test
     void readMonthlyAgenda() {
         //given
-        MonthlyAgendaRequestDto.ReadMonthlyAgendaRequestDto readMonthlyAgendaRequestDto = getMonthlyAgendaReadReq();
+        LocalDate Today = LocalDate.now();
+        int year = Today.getYear();
+        int month = Today.getMonthValue();
 
         given(memberRepository.findByUserId(any()))
                 .willReturn(Optional.ofNullable(getMember()));
@@ -89,7 +92,7 @@ public class MonthlyAgendaServiceImplTest {
                 .willReturn(Optional.ofNullable(getMonthlyAgenda()));
 
         //when
-        MonthlyAgendaResponseDto.ReadMonthlyAgendaResponseDto readMonthlyAgendaResponseDto = monthlyAgendaService.readMonthlyAgenda(readMonthlyAgendaRequestDto, securityUtils);
+        MonthlyAgendaResponseDto.ReadMonthlyAgendaResponseDto readMonthlyAgendaResponseDto = monthlyAgendaService.readMonthlyAgenda(year, month, securityUtils);
 
         //then
 
@@ -146,13 +149,6 @@ public class MonthlyAgendaServiceImplTest {
     private MonthlyAgendaRequestDto.CreateMonthlyAgendaRequestDto getMonthlyAgendaCreateReq() {
         return MonthlyAgendaRequestDto.CreateMonthlyAgendaRequestDto.builder()
                 .todo("이번달 아젠다")
-                .build();
-    }
-
-    private MonthlyAgendaRequestDto.ReadMonthlyAgendaRequestDto getMonthlyAgendaReadReq() {
-        return MonthlyAgendaRequestDto.ReadMonthlyAgendaRequestDto.builder()
-                .year(2024)
-                .month(5)
                 .build();
     }
 
