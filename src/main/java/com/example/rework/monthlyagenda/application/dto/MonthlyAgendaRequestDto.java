@@ -4,15 +4,6 @@ import lombok.*;
 
 public class MonthlyAgendaRequestDto {
     @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class ReadMonthlyAgendaRequestDto{
-        private int year;
-        private int month;
-    }
-
-    @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     @Builder

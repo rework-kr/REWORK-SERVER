@@ -5,7 +5,7 @@ import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaResponseDto
 import com.example.rework.config.security.SecurityUtils;
 
 public interface MonthlyAgendaService {
-    MonthlyAgendaResponseDto.ReadMonthlyAgendaResponseDto readMonthlyAgenda(MonthlyAgendaRequestDto.ReadMonthlyAgendaRequestDto readMonthlyAgendaRequestDto , SecurityUtils securityUtils);
+    MonthlyAgendaResponseDto.ReadMonthlyAgendaResponseDto readMonthlyAgenda(int year, int month, SecurityUtils securityUtils);
 
     MonthlyAgendaResponseDto.CreateMonthlyAgendaResponseDto createMonthlyAgenda(MonthlyAgendaRequestDto.CreateMonthlyAgendaRequestDto createMonthlyAgendaRequestDto, SecurityUtils securityUtils);
 

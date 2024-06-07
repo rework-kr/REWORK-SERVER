@@ -2,7 +2,6 @@ package com.example.rework.monthlyagenda.application.impl;
 
 import com.example.rework.monthlyagenda.application.MonthlyAgendaService;
 import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaRequestDto.CreateMonthlyAgendaRequestDto;
-import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaRequestDto.ReadMonthlyAgendaRequestDto;
 import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaRequestDto.UpdateMonthlyAgendaRequestDto;
 import com.example.rework.monthlyagenda.application.dto.MonthlyAgendaResponseDto;
 import com.example.rework.monthlyagenda.domain.MonthlyAgenda;
@@ -31,12 +30,12 @@ public class MonthlyAgendaServiceImpl implements MonthlyAgendaService {
     private final MemberRepository memberRepository;
 
     @Override
-    public MonthlyAgendaResponseDto.ReadMonthlyAgendaResponseDto readMonthlyAgenda(ReadMonthlyAgendaRequestDto readMonthlyAgendaRequestDto, SecurityUtils securityUtils) {
+    public MonthlyAgendaResponseDto.ReadMonthlyAgendaResponseDto readMonthlyAgenda(int year, int month, SecurityUtils securityUtils) {
         Optional<Member> curMember = memberRepository.findByUserId(securityUtils.getCurrentUserId());
         Long currentUserId = curMember.get().getId();
 
-        LocalDateTime start = YearMonth.of(readMonthlyAgendaRequestDto.getYear(), readMonthlyAgendaRequestDto.getMonth()).atDay(1).atStartOfDay();
-        LocalDateTime end = YearMonth.of(readMonthlyAgendaRequestDto.getYear(), readMonthlyAgendaRequestDto.getMonth()).atEndOfMonth().atTime(23, 59, 59);
+        LocalDateTime start = YearMonth.of(year, month).atDay(1).atStartOfDay();
+        LocalDateTime end = YearMonth.of(year, month).atEndOfMonth().atTime(23, 59, 59);
 
         Optional<MonthlyAgenda> monthlyAgendaOptional = monthlyAgendaRepository.findByMemberIdAndCreatedAtBetween(currentUserId, start, end);
 
