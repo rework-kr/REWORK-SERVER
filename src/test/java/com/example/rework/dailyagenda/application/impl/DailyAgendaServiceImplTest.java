@@ -85,10 +85,14 @@ class DailyAgendaServiceImplTest {
     @Test
     @DisplayName("오늘의 아젠다 조회")
     void readDailyAgenda() {
-        DailyAgendaRequestDto.ReadDailyAgendaRequestDto readDailyAgendaRequestDto = getDailyAgendaReadReq();
+        LocalDate Today = LocalDate.now();
+        int year = Today.getYear();
+        int month = Today.getMonthValue();
+        int day = Today.getDayOfMonth();
+        boolean state = false;
 
         Long userId = 1L;
-        LocalDate date = LocalDate.of(readDailyAgendaRequestDto.getYear(), readDailyAgendaRequestDto.getMonth(), readDailyAgendaRequestDto.getDay());
+        LocalDate date = LocalDate.of(year, month, day);
         LocalDateTime start = date.atStartOfDay();
         LocalDateTime end = date.atTime(LocalTime.MAX);
         List<DailyAgenda> dailyAgendaList = getDailyAgendaList(userId);
@@ -96,10 +100,10 @@ class DailyAgendaServiceImplTest {
         given(memberRepository.findByUserId(any()))
                 .willReturn(Optional.ofNullable(getMember()));
 
-        given(dailyAgendaRepository.findByMemberIdAndCreatedAtBetweenAndState(userId, start, end, readDailyAgendaRequestDto.getState()))
+        given(dailyAgendaRepository.findByMemberIdAndCreatedAtBetweenAndState(userId, start, end, state))
                 .willReturn(dailyAgendaList);
 
-        DailyAgendaResponseDto.ReadDailyAgendaResponseDto readDailyAgendaResponseDto = dailyAgendaService.readDailyAgenda(readDailyAgendaRequestDto, null);
+        DailyAgendaResponseDto.ReadDailyAgendaResponseDto readDailyAgendaResponseDto = dailyAgendaService.readDailyAgenda(year, month, day, state, null);
 
         // then
         Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(0).getPagingId()).isEqualTo(1L);
