@@ -23,8 +23,8 @@ public class DailyAgendaController implements DailyAgendaApi {
     private final DailyAgendaService dailyAgendaService;
 
     @Override
-    public ResponseEntity<CommonResDto<?>> readDailyAgenda(ReadDailyAgendaRequestDto readDailyAgendaRequestDto, SecurityUtils securityUtils) {
-        ReadDailyAgendaResponseDto result = dailyAgendaService.readDailyAgenda(readDailyAgendaRequestDto, securityUtils);
+    public ResponseEntity<CommonResDto<?>> readDailyAgenda(int year,int month,int day,Boolean state , SecurityUtils securityUtils) {
+        ReadDailyAgendaResponseDto result = dailyAgendaService.readDailyAgenda(year,month,day,state, securityUtils);
         return ResponseEntity.status(HttpStatus.OK).body(new CommonResDto<>(1, "오늘의 아젠다 조회에 성공", result));
     }
 

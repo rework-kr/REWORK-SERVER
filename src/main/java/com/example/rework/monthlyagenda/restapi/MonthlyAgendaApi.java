@@ -24,7 +24,7 @@ public interface MonthlyAgendaApi {
     @GetMapping
     ResponseEntity<CommonResDto<?>> readMonthlyAgenda(
             @RequestParam("year") int year,
-            @RequestParam("year") int month,
+            @RequestParam("month") int month,
             SecurityUtils securityUtils
     );
 

@@ -34,22 +34,22 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
     private final MemberRepository memberRepository;
 
     @Override
-    public ReadDailyAgendaResponseDto readDailyAgenda(ReadDailyAgendaRequestDto readDailyAgendaRequestDto, SecurityUtils securityUtils) {
+    public ReadDailyAgendaResponseDto readDailyAgenda(int year, int month, int day, Boolean state, SecurityUtils securityUtils) {
         Optional<Member> curMember = memberRepository.findByUserId(securityUtils.getCurrentUserId());
         Long currentUserId = curMember.get().getId();
 
-        LocalDate date = LocalDate.of(readDailyAgendaRequestDto.getYear(), readDailyAgendaRequestDto.getMonth(), readDailyAgendaRequestDto.getDay());
+        LocalDate date = LocalDate.of(year, month, day);
         LocalDateTime start = date.atStartOfDay();
         LocalDateTime end = date.atTime(LocalTime.MAX);
 
         List<DailyAgenda> agendaList;
 
-        if (readDailyAgendaRequestDto.getState() == null) {
+        if (state == null) {
             // 모든 투두 조회
             agendaList = dailyAgendaRepository.findByMemberIdAndCreatedAtBetween(currentUserId, start, end);
         } else {
             // 완료된 투두 또는 미완료 투두 조회
-            agendaList = dailyAgendaRepository.findByMemberIdAndCreatedAtBetweenAndState(currentUserId, start, end, readDailyAgendaRequestDto.getState());
+            agendaList = dailyAgendaRepository.findByMemberIdAndCreatedAtBetweenAndState(currentUserId, start, end, state);
         }
 
         List<ReadDetailDailyAgendaResponseDto> result = agendaList.stream()

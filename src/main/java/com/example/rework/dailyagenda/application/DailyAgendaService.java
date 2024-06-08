@@ -7,7 +7,7 @@ import com.example.rework.dailyagenda.application.dto.DailyAgendaResponseDto.*;
 import java.util.List;
 
 public interface DailyAgendaService {
-    ReadDailyAgendaResponseDto readDailyAgenda(ReadDailyAgendaRequestDto readDailyAgendaRequestDto, SecurityUtils securityUtils);
+    ReadDailyAgendaResponseDto readDailyAgenda(int year, int month, int day, Boolean state, SecurityUtils securityUtils);
 
     CreateDailyAgendaResponseDto createDailyAgenda(CreateDailyAgendaRequestDto createDailyAgendaRequestDto, SecurityUtils securityUtils);
 
