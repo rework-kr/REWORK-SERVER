@@ -22,6 +22,7 @@ public class DailyAgendaResponseDto {
         private Long agendaId;
         private String todo;
         private boolean state;
+        private Long pagingId;
     }
 
     @Getter

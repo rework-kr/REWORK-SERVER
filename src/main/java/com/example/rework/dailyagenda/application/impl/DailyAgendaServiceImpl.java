@@ -114,6 +114,7 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
                 .agendaId(dailyAgenda.getId())
                 .todo(dailyAgenda.getTodo())
                 .state(dailyAgenda.isState())
+                .pagingId(dailyAgenda.getPagingId())
                 .build();
     }
 
@@ -138,11 +139,11 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
     }
 
     @Override
-    public ReadDailyCompleteRateResponseDto readDailyCompleteRate(ReadDailyCompleteRateRequestDto readDailyCompleteRateRequestDto, SecurityUtils securityUtils) {
+    public ReadDailyCompleteRateResponseDto readDailyCompleteRate(int year, int month, int day, SecurityUtils securityUtils) {
         Optional<Member> curMember = memberRepository.findByUserId(securityUtils.getCurrentUserId());
         Long currentUserId = curMember.get().getId();
 
-        LocalDate date = LocalDate.of(readDailyCompleteRateRequestDto.getYear(), readDailyCompleteRateRequestDto.getMonth(), readDailyCompleteRateRequestDto.getDay());
+        LocalDate date = LocalDate.of(year, month, day);
         LocalDateTime start = date.atStartOfDay();
         LocalDateTime end = date.atTime(LocalTime.MAX);
 
@@ -162,11 +163,11 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
     }
 
     @Override
-    public ReadMonthlyCompleteRateResponseDto readMonthlyCompleteRate(ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRateRequestDto, SecurityUtils securityUtils) {
+    public ReadMonthlyCompleteRateResponseDto readMonthlyCompleteRate(int year, int month, SecurityUtils securityUtils) {
         Optional<Member> curMember = memberRepository.findByUserId(securityUtils.getCurrentUserId());
         Long currentUserId = curMember.get().getId();
 
-        LocalDate startDate = LocalDate.of(readMonthlyCompleteRateRequestDto.getYear(), readMonthlyCompleteRateRequestDto.getMonth(), 1);
+        LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
         LocalDateTime start = startDate.atStartOfDay();
         LocalDateTime end = endDate.atTime(LocalTime.MAX);

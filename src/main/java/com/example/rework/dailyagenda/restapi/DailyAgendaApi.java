@@ -73,7 +73,9 @@ public interface DailyAgendaApi {
     )
     @GetMapping("/dailyCompleteRate")
     ResponseEntity<CommonResDto<?>> readDailyCompleteRate(
-            @RequestBody ReadDailyCompleteRateRequestDto readDailyCompleteRateRequestDto,
+            @RequestParam("year") int year,
+            @RequestParam("month") int month,
+            @RequestParam("day") int day,
             SecurityUtils securityUtils
     );
 
@@ -84,7 +86,8 @@ public interface DailyAgendaApi {
     )
     @GetMapping("/monthlyCompleteRate")
     ResponseEntity<CommonResDto<?>> readMonthlyCompleteRate(
-            @RequestBody ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRateRequestDto,
+            @RequestParam("year") int year,
+            @RequestParam("month") int month,
             SecurityUtils securityUtils
     );
 
@@ -100,7 +103,7 @@ public interface DailyAgendaApi {
                     "}"
     )
     @PutMapping("/bulk-update-pagingId")
-    ResponseEntity<CommonResDto<?>> updateDailyAgendataPagingId(
+    ResponseEntity<CommonResDto<?>> updateDailyAgendaPagingId(
             @RequestBody List<UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList,
             SecurityUtils securityUtils
     );

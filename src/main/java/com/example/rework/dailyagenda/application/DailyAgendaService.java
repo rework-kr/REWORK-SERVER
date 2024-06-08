@@ -15,9 +15,9 @@ public interface DailyAgendaService {
 
     boolean deleteDailyAgenda(Long dailyAgendaId, SecurityUtils securityUtils);
 
-    ReadDailyCompleteRateResponseDto readDailyCompleteRate(ReadDailyCompleteRateRequestDto readDailyCompleteRateRequestDto, SecurityUtils securityUtils);
+    ReadDailyCompleteRateResponseDto readDailyCompleteRate(int year, int month, int day, SecurityUtils securityUtils);
 
-    ReadMonthlyCompleteRateResponseDto readMonthlyCompleteRate(ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRateRequestDto, SecurityUtils securityUtils);
+    ReadMonthlyCompleteRateResponseDto readMonthlyCompleteRate(int year, int month, SecurityUtils securityUtils);
 
     List<ReadDetailDailyAgendaResponseDto> bulkUpdateDailyAgendaByPagingId(List<UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList, SecurityUtils securityUtils);
 
