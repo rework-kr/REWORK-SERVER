@@ -202,12 +202,17 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
     void readDailyCompleteRate() throws Exception {
         //given
         String url = "/api/v1/dailyAgenda/dailyCompleteRate";
-        DailyAgendaRequestDto.ReadDailyCompleteRateRequestDto readDailyCompleteRateRequestDto = DailyAgendaFixture.readDailyCompleteRate();
+        LocalDate Today = LocalDate.now();
+        int year = Today.getYear();
+        int month = Today.getMonthValue();
+        int day = Today.getDayOfMonth();
 
         //when
         MvcResult mvcResult = mockMvc.perform(get(url)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(readDailyCompleteRateRequestDto))
+                        .param("year", String.valueOf(year))
+                        .param("month", String.valueOf(month))
+                        .param("day", String.valueOf(day))
                         .characterEncoding(StandardCharsets.UTF_8)
                 )
                 .andDo(print())
@@ -237,12 +242,15 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
     void readMonthlyCompleteRate() throws Exception {
         //given
         String url = "/api/v1/dailyAgenda/monthlyCompleteRate";
-        DailyAgendaRequestDto.ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRateRequestDto = DailyAgendaFixture.readMonthlyCompleteRate();
+        LocalDate Today = LocalDate.now();
+        int year = Today.getYear();
+        int month = Today.getMonthValue();
 
         //when
         MvcResult mvcResult = mockMvc.perform(get(url)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(readMonthlyCompleteRateRequestDto))
+                        .param("year", String.valueOf(year))
+                        .param("month", String.valueOf(month))
                         .characterEncoding(StandardCharsets.UTF_8)
                 )
                 .andDo(print())
@@ -270,7 +278,7 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
     @DisplayName("오늘의 아젠다 pagingId 별 정렬 테스트")
     @Test
     @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
-    void updateDailyAgendataPagingIdTest() throws Exception {
+    void updateDailyAgendaPagingIdTest() throws Exception {
         //given
         String url = "/api/v1/dailyAgenda/bulk-update-pagingId";
         Long updatePagingId = 2L;

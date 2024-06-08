@@ -220,15 +220,6 @@ class DailyAgendaServiceImplTest {
                 .build();
     }
 
-    private DailyAgendaRequestDto.ReadDailyAgendaRequestDto getDailyAgendaReadReq() {
-        return DailyAgendaRequestDto.ReadDailyAgendaRequestDto.builder()
-                .year(2024)
-                .month(5)
-                .day(30)
-                .state(false)
-                .build();
-    }
-
     private DailyAgendaRequestDto.UpdateDailyAgendaRequestDto getDailyAgendaUpdateReq() {
         return DailyAgendaRequestDto.UpdateDailyAgendaRequestDto.builder()
                 .agendaId(1L)
