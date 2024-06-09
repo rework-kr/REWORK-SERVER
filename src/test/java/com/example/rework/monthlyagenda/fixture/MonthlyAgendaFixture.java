@@ -18,11 +18,4 @@ public class MonthlyAgendaFixture {
                 .build();
     }
 
-    public static MonthlyAgendaRequestDto.ReadMonthlyAgendaRequestDto readAgenda(){
-        return MonthlyAgendaRequestDto.ReadMonthlyAgendaRequestDto.builder()
-                .year(2024)
-                .month(LocalDateTime.now().getMonthValue())
-                .build();
-    }
-
 }

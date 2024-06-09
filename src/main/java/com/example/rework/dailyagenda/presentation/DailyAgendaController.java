@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,8 +24,8 @@ public class DailyAgendaController implements DailyAgendaApi {
     private final DailyAgendaService dailyAgendaService;
 
     @Override
-    public ResponseEntity<CommonResDto<?>> readDailyAgenda(ReadDailyAgendaRequestDto readDailyAgendaRequestDto, SecurityUtils securityUtils) {
-        ReadDailyAgendaResponseDto result = dailyAgendaService.readDailyAgenda(readDailyAgendaRequestDto, securityUtils);
+    public ResponseEntity<CommonResDto<?>> readDailyAgenda(@RequestParam("year") int year, @RequestParam("month") int month, @RequestParam("day") int day, Boolean state, SecurityUtils securityUtils) {
+        ReadDailyAgendaResponseDto result = dailyAgendaService.readDailyAgenda(year, month, day, state, securityUtils);
         return ResponseEntity.status(HttpStatus.OK).body(new CommonResDto<>(1, "오늘의 아젠다 조회에 성공", result));
     }
 
@@ -47,19 +48,19 @@ public class DailyAgendaController implements DailyAgendaApi {
     }
 
     @Override
-    public ResponseEntity<CommonResDto<?>> readDailyCompleteRate(ReadDailyCompleteRateRequestDto readDailyCompleteRateRequestDto, SecurityUtils securityUtils) {
-        ReadDailyCompleteRateResponseDto result = dailyAgendaService.readDailyCompleteRate(readDailyCompleteRateRequestDto, securityUtils);
+    public ResponseEntity<CommonResDto<?>> readDailyCompleteRate(int year, int month, int day, SecurityUtils securityUtils) {
+        ReadDailyCompleteRateResponseDto result = dailyAgendaService.readDailyCompleteRate(year, month, day, securityUtils);
         return ResponseEntity.status(HttpStatus.OK).body(new CommonResDto<>(1, "오늘의 아젠다 수행률 조회 성공", result));
     }
 
     @Override
-    public ResponseEntity<CommonResDto<?>> readMonthlyCompleteRate(ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRateRequestDto, SecurityUtils securityUtils) {
-        ReadMonthlyCompleteRateResponseDto result = dailyAgendaService.readMonthlyCompleteRate(readMonthlyCompleteRateRequestDto, securityUtils);
+    public ResponseEntity<CommonResDto<?>> readMonthlyCompleteRate(int year, int month, SecurityUtils securityUtils) {
+        ReadMonthlyCompleteRateResponseDto result = dailyAgendaService.readMonthlyCompleteRate(year, month, securityUtils);
         return ResponseEntity.status(HttpStatus.OK).body(new CommonResDto<>(1, "이달의 누적 아젠다 수행률 조회 성공", result));
     }
 
     @Override
-    public ResponseEntity<CommonResDto<?>> updateDailyAgendataPagingId (List<UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList , SecurityUtils securityUtils) {
+    public ResponseEntity<CommonResDto<?>> updateDailyAgendaPagingId(List<UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList, SecurityUtils securityUtils) {
         List<ReadDetailDailyAgendaResponseDto> result = dailyAgendaService.bulkUpdateDailyAgendaByPagingId(updateDailyAgendaListRequestDtoList, securityUtils);
         return ResponseEntity.status(HttpStatus.OK).body(new CommonResDto<>(1, "pagingId 별 오늘의 아젠다 업데이트 성공", result));
     }

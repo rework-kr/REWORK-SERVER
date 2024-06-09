@@ -20,34 +20,11 @@ public class DailyAgendaFixture {
                 .build();
     }
 
-    public static DailyAgendaRequestDto.ReadDailyAgendaRequestDto readAgenda() {
-        return DailyAgendaRequestDto.ReadDailyAgendaRequestDto.builder()
-                .year(TEST_YEAR)
-                .month(TEST_MONTH)
-                .day(TEST_DAY)
-                .build();
-    }
-
     public static DailyAgendaRequestDto.UpdateDailyAgendaRequestDto updateAgenda(Long agendaId) {
         return DailyAgendaRequestDto.UpdateDailyAgendaRequestDto.builder()
                 .todo("수정한 아젠다")
                 .agendaId(agendaId)
                 .state(true)
-                .build();
-    }
-
-    public static DailyAgendaRequestDto.ReadDailyCompleteRateRequestDto readDailyCompleteRate() {
-        return DailyAgendaRequestDto.ReadDailyCompleteRateRequestDto.builder()
-                .year(TEST_YEAR)
-                .month(TEST_MONTH)
-                .day(TEST_DAY)
-                .build();
-    }
-
-    public static DailyAgendaRequestDto.ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRate() {
-        return DailyAgendaRequestDto.ReadMonthlyCompleteRateRequestDto.builder()
-                .year(TEST_YEAR)
-                .month(TEST_MONTH)
                 .build();
     }
 

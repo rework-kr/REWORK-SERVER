@@ -21,9 +21,12 @@ public interface DailyAgendaApi {
             description = "사용자 정보를 받아 '오늘의 아젠다를' 조회하는 API \n"
                     + "조회시 옵션 3가지 제공. 공백, true, false에 따라 해당하는 아젠다를 조회."
     )
-    @GetMapping("/")
+    @GetMapping
     ResponseEntity<CommonResDto<?>> readDailyAgenda(
-            @RequestBody ReadDailyAgendaRequestDto readDailyAgendaRequestDto,
+            @RequestParam("year") int year,
+            @RequestParam("month") int month,
+            @RequestParam("day") int day,
+            @RequestParam("state") Boolean state,
             SecurityUtils securityUtils
     );
 
@@ -31,7 +34,7 @@ public interface DailyAgendaApi {
             summary = "이번달 아젠다 생성",
             description = "아젠다를 입력받아 '오늘의 아젠다'를 생성함"
     )
-    @PostMapping("/")
+    @PostMapping
     ResponseEntity<CommonResDto<?>> crateDailyAgenda(
             @RequestBody CreateDailyAgendaRequestDto createDailyAgendaRequestDto,
             SecurityUtils securityUtils
@@ -41,7 +44,7 @@ public interface DailyAgendaApi {
             summary = "이번달 아젠다 수정",
             description = "수정된 아젠다를 입력받아 '오늘의 아젠다'를 수정함"
     )
-    @PutMapping("/")
+    @PutMapping
     ResponseEntity<CommonResDto<?>> updateDailyAgenda(
             @RequestBody UpdateDailyAgendaRequestDto updateDailyAgendaRequestDto,
             SecurityUtils securityUtils
@@ -51,7 +54,7 @@ public interface DailyAgendaApi {
             summary = "이번달 아젠다 삭제",
             description = "삭제하고자 하는 아젠다id를 입력 받아 해당하는 '오늘의 아젠다'를 삭제함"
     )
-    @DeleteMapping("/")
+    @DeleteMapping
     ResponseEntity<CommonResDto<?>> deleteDailyAgenda(
             @RequestParam("dailyAgendaId") Long dailyAgendaId,
             SecurityUtils securityUtils
@@ -70,7 +73,9 @@ public interface DailyAgendaApi {
     )
     @GetMapping("/dailyCompleteRate")
     ResponseEntity<CommonResDto<?>> readDailyCompleteRate(
-            @RequestBody ReadDailyCompleteRateRequestDto readDailyCompleteRateRequestDto,
+            @RequestParam("year") int year,
+            @RequestParam("month") int month,
+            @RequestParam("day") int day,
             SecurityUtils securityUtils
     );
 
@@ -81,7 +86,8 @@ public interface DailyAgendaApi {
     )
     @GetMapping("/monthlyCompleteRate")
     ResponseEntity<CommonResDto<?>> readMonthlyCompleteRate(
-            @RequestBody ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRateRequestDto,
+            @RequestParam("year") int year,
+            @RequestParam("month") int month,
             SecurityUtils securityUtils
     );
 
@@ -97,7 +103,7 @@ public interface DailyAgendaApi {
                     "}"
     )
     @PutMapping("/bulk-update-pagingId")
-    ResponseEntity<CommonResDto<?>> updateDailyAgendataPagingId(
+    ResponseEntity<CommonResDto<?>> updateDailyAgendaPagingId(
             @RequestBody List<UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtoList,
             SecurityUtils securityUtils
     );

@@ -16,6 +16,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,7 +54,7 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
     @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
     void createAgenda() throws Exception {
         //given
-        String url = "/api/v1/dailyAgenda/";
+        String url = "/api/v1/dailyAgenda";
         DailyAgendaRequestDto.CreateDailyAgendaRequestDto createDailyAgendaRequestDto = DailyAgendaFixture.createAgenda();
 
         //when
@@ -87,13 +88,20 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
     @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
     void readAgenda() throws Exception {
         //given
-        String url = "/api/v1/dailyAgenda/";
-        DailyAgendaRequestDto.ReadDailyAgendaRequestDto readDailyAgendaRequestDto = DailyAgendaFixture.readAgenda();
+        String url = "/api/v1/dailyAgenda";
+        LocalDate Today = LocalDate.now();
+        int year = Today.getYear();
+        int month = Today.getMonthValue();
+        int day = Today.getDayOfMonth();
+        boolean inputState = false;
 
         //when
         MvcResult mvcResult = mockMvc.perform(get(url)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(readDailyAgendaRequestDto))
+                        .param("year", String.valueOf(year))
+                        .param("month", String.valueOf(month))
+                        .param("day", String.valueOf(day))
+                        .param("state", String.valueOf(inputState))
                         .characterEncoding(StandardCharsets.UTF_8)
                 )
                 .andDo(print())
@@ -128,7 +136,7 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
     @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
     void updateAgenda() throws Exception {
         //given
-        String url = "/api/v1/dailyAgenda/";
+        String url = "/api/v1/dailyAgenda";
 
         DailyAgendaRequestDto.UpdateDailyAgendaRequestDto updateDailyAgendaRequestDto = DailyAgendaFixture.updateAgenda(dailyAgendaId);
 
@@ -163,7 +171,7 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
     @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
     void deleteAgenda() throws Exception {
         //given
-        String url = "/api/v1/dailyAgenda/?dailyAgendaId=" + dailyAgendaId;
+        String url = "/api/v1/dailyAgenda?dailyAgendaId=" + dailyAgendaId;
 
         //when
         MvcResult mvcResult = mockMvc.perform(delete(url)
@@ -194,12 +202,17 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
     void readDailyCompleteRate() throws Exception {
         //given
         String url = "/api/v1/dailyAgenda/dailyCompleteRate";
-        DailyAgendaRequestDto.ReadDailyCompleteRateRequestDto readDailyCompleteRateRequestDto = DailyAgendaFixture.readDailyCompleteRate();
+        LocalDate Today = LocalDate.now();
+        int year = Today.getYear();
+        int month = Today.getMonthValue();
+        int day = Today.getDayOfMonth();
 
         //when
         MvcResult mvcResult = mockMvc.perform(get(url)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(readDailyCompleteRateRequestDto))
+                        .param("year", String.valueOf(year))
+                        .param("month", String.valueOf(month))
+                        .param("day", String.valueOf(day))
                         .characterEncoding(StandardCharsets.UTF_8)
                 )
                 .andDo(print())
@@ -229,12 +242,15 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
     void readMonthlyCompleteRate() throws Exception {
         //given
         String url = "/api/v1/dailyAgenda/monthlyCompleteRate";
-        DailyAgendaRequestDto.ReadMonthlyCompleteRateRequestDto readMonthlyCompleteRateRequestDto = DailyAgendaFixture.readMonthlyCompleteRate();
+        LocalDate Today = LocalDate.now();
+        int year = Today.getYear();
+        int month = Today.getMonthValue();
 
         //when
         MvcResult mvcResult = mockMvc.perform(get(url)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(readMonthlyCompleteRateRequestDto))
+                        .param("year", String.valueOf(year))
+                        .param("month", String.valueOf(month))
                         .characterEncoding(StandardCharsets.UTF_8)
                 )
                 .andDo(print())
@@ -259,15 +275,14 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
     }
 
 
-
     @DisplayName("오늘의 아젠다 pagingId 별 정렬 테스트")
     @Test
     @WithMockUser(username = "kbsserver@naver.com", authorities = {"MEMBER"})
-    void updateDailyAgendataPagingIdTest() throws Exception {
+    void updateDailyAgendaPagingIdTest() throws Exception {
         //given
         String url = "/api/v1/dailyAgenda/bulk-update-pagingId";
-        Long updatePagingId=2L;
-        List<DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtos = DailyAgendaFixture.updateDailyAgendaListRequestDtoList(dailyAgendaId,updatePagingId);
+        Long updatePagingId = 2L;
+        List<DailyAgendaRequestDto.UpdateDailyAgendaListRequestDto> updateDailyAgendaListRequestDtos = DailyAgendaFixture.updateDailyAgendaListRequestDtoList(dailyAgendaId, updatePagingId);
 
         //when
         MvcResult mvcResult = mockMvc.perform(put(url)
