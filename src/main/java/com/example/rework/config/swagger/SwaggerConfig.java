@@ -41,6 +41,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .components(new Components().addSecuritySchemes("bearerAuth", securityScheme))
                 .security(Arrays.asList(securityRequirement))
+                .servers(Arrays.asList(server))
                 .path("/api/v1/members/login", new PathItem()
                         .post(new Operation()
                                 .operationId("login")
