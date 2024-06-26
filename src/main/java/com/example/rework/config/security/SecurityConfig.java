@@ -112,7 +112,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","https://rework-eight.vercel.app"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","https://rework-eight.vercel.app", "https://rework.im","https://www.rework.im"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST","PUT","DELETE","PATCH"));
         configuration.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
