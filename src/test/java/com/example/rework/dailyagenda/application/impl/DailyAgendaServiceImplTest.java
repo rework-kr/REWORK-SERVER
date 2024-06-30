@@ -129,13 +129,14 @@ class DailyAgendaServiceImplTest {
 
         given(dailyAgendaRepository.findById(any()))
                 .willReturn(Optional.ofNullable(getDailyAgenda()));
+
         //when
         DailyAgendaResponseDto.UpdateDailyAgendaResponseDto updateDailyAgendaResponseDto = dailyAgendaService.updateDailyAgenda(updateDailyAgendaRequestDto, null);
 
         //then
         Assertions.assertThat(updateDailyAgendaResponseDto.getAgendaId()).isEqualTo(1L);
         Assertions.assertThat(updateDailyAgendaResponseDto.getTodo()).isEqualTo("수정된 아젠다");
-
+        Assertions.assertThat(updateDailyAgendaResponseDto.getPagingId()).isEqualTo(2L);
     }
 
 
@@ -224,6 +225,7 @@ class DailyAgendaServiceImplTest {
         return DailyAgendaRequestDto.UpdateDailyAgendaRequestDto.builder()
                 .agendaId(1L)
                 .todo("수정된 아젠다")
+                .pagingId(2L)
                 .state(true)
                 .build();
     }

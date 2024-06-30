@@ -137,8 +137,9 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
     void updateAgenda() throws Exception {
         //given
         String url = "/api/v1/dailyAgenda";
+        Long updatePagingId = 2L;
 
-        DailyAgendaRequestDto.UpdateDailyAgendaRequestDto updateDailyAgendaRequestDto = DailyAgendaFixture.updateAgenda(dailyAgendaId);
+        DailyAgendaRequestDto.UpdateDailyAgendaRequestDto updateDailyAgendaRequestDto = DailyAgendaFixture.updateAgenda(dailyAgendaId, updatePagingId);
 
         MvcResult mvcResult = mockMvc.perform(put(url)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -158,10 +159,12 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
         Long id = resultData.get("agendaId").asLong();
         String todo = resultData.get("todo").asText();
         boolean state = resultData.get("state").asBoolean();
+        Long pagingId = resultData.get("pagingId").asLong();
 
         assertAll(
                 () -> assertThat(id).isNotNull(),
                 () -> assertThat(todo).isEqualTo("수정한 아젠다"),
+                () -> assertThat(pagingId).isEqualTo(2L),
                 () -> assertThat(state).isTrue()
         );
     }

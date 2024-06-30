@@ -20,10 +20,11 @@ public class DailyAgendaFixture {
                 .build();
     }
 
-    public static DailyAgendaRequestDto.UpdateDailyAgendaRequestDto updateAgenda(Long agendaId) {
+    public static DailyAgendaRequestDto.UpdateDailyAgendaRequestDto updateAgenda(Long agendaId,Long updatePagingId) {
         return DailyAgendaRequestDto.UpdateDailyAgendaRequestDto.builder()
                 .todo("수정한 아젠다")
                 .agendaId(agendaId)
+                .pagingId(updatePagingId)
                 .state(true)
                 .build();
     }
