@@ -128,7 +128,7 @@ class DailyAgendaServiceImplTest {
                 .willReturn(Optional.ofNullable(getMember()));
 
         given(dailyAgendaRepository.findById(any()))
-                .willReturn(Optional.ofNullable(getDailyAgenda()));
+                .willReturn(Optional.ofNullable(getDailyAgendaForUpdate()));
 
         //when
         DailyAgendaResponseDto.UpdateDailyAgendaResponseDto updateDailyAgendaResponseDto = dailyAgendaService.updateDailyAgenda(updateDailyAgendaRequestDto, null);
@@ -228,6 +228,18 @@ class DailyAgendaServiceImplTest {
                 .pagingId(2L)
                 .state(true)
                 .build();
+    }
+
+    private DailyAgenda getDailyAgendaForUpdate() {
+        DailyAgenda dailyAgenda = DailyAgenda.builder()
+                .todo("오늘의 아젠다")
+                .pagingId(1L)
+                .state(false)
+                .member(getMember())
+                .build();
+        ReflectionTestUtils.setField(dailyAgenda, "id", 1L);
+        ReflectionTestUtils.setField(dailyAgenda, "createdAt", LocalDateTime.now());
+        return dailyAgenda;
     }
 
     private DailyAgenda getDailyAgenda() {
