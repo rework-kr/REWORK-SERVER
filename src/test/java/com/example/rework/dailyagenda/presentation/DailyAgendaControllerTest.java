@@ -120,12 +120,12 @@ public class DailyAgendaControllerTest extends ControllerTestSupport {
         assertThat(resultList.isArray()).isTrue();
         JsonNode firstAgenda = resultList.get(0);
 
-        Long id = firstAgenda.get("id").asLong();
+        Long agendaId = firstAgenda.get("agendaId").asLong();
         String todo = firstAgenda.get("todo").asText();
         boolean state = firstAgenda.get("state").asBoolean();
 
         assertAll(
-                () -> assertThat(id).isNotNull(),
+                () -> assertThat(agendaId).isNotNull(),
                 () -> assertThat(todo).isEqualTo("오늘의 아젠다"),
                 () -> assertThat(state).isFalse()
         );

@@ -39,16 +39,16 @@ public class DailyAgendaResponseDto {
     @AllArgsConstructor
     @Builder
     public static class ReadDetailDailyAgendaResponseDto {
-        private Long id;
+        private Long agendaId;
         private String todo;
         private Long pagingId;
         private boolean state;
 
-        public ReadDetailDailyAgendaResponseDto(Long id, String todo, boolean state,Long pagingId) {
-            this.id = id;
+        public ReadDetailDailyAgendaResponseDto(Long agendaId, String todo, boolean state, Long pagingId) {
+            this.agendaId = agendaId;
             this.todo = todo;
             this.state = state;
-            this.pagingId=pagingId;
+            this.pagingId = pagingId;
         }
     }
 
@@ -65,7 +65,7 @@ public class DailyAgendaResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class ReadMonthlyCompleteRateResponseDto{
+    public static class ReadMonthlyCompleteRateResponseDto {
         private int completeCount;
         private int allCount;
     }
