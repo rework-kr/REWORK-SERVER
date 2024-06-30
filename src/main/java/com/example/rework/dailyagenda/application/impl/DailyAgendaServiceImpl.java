@@ -105,6 +105,7 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
         if (!dailyAgenda.getMember().getId().equals(currentUserId)) {
             throw new UnAuthorizedException("유저가 소유한 아젠다가 아닙니다.");
         }
+        dailyAgenda.updatePagingId(updateDailyAgendaRequestDto.getPagingId());
         dailyAgenda.setTodo(updateDailyAgendaRequestDto.getTodo());
         dailyAgenda.setState(updateDailyAgendaRequestDto.isState());
 
