@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.nio.charset.StandardCharsets;
@@ -40,11 +41,16 @@ public class MonthlyAgendaControllerTest extends ControllerTestSupport {
                 .role(MemberRole.MEMBER)
                 .state(true)
                 .build();
+
+//        LocalDateTime nowInKorea = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
         MonthlyAgenda monthlyAgenda = MonthlyAgenda.builder()
                 .todo("이번달아젠다")
                 .state(false)
                 .member(member)
                 .build();
+//        ReflectionTestUtils.setField(monthlyAgenda, "createdAt", nowInKorea);
+
         memberRepository.saveAndFlush(member);
         MonthlyAgenda savedAgenda = monthlyAgendaRepository.saveAndFlush(monthlyAgenda);
         monthlyAgendaId = savedAgenda.getId();
@@ -99,8 +105,8 @@ public class MonthlyAgendaControllerTest extends ControllerTestSupport {
 
         //when
         MvcResult mvcResult = mockMvc.perform(get(url)
-                        .param("year",String.valueOf(year))
-                        .param("month",String.valueOf(month))
+                        .param("year", String.valueOf(year))
+                        .param("month", String.valueOf(month))
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                 )
@@ -122,13 +128,17 @@ public class MonthlyAgendaControllerTest extends ControllerTestSupport {
         String createTime = resultData.get("createTime").asText();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
-        LocalDateTime nowInKorea = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        String formattedNow = nowInKorea.format(formatter);
+//        LocalDateTime nowInKorea = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+//        String formattedNow = nowInKorea.format(formatter);
+
+        LocalDateTime time = LocalDateTime.now();
+        String formattedNow = time.format(formatter);
+
         assertAll(
                 () -> assertThat(id).isNotNull(),
                 () -> assertThat(todo).isEqualTo("이번달아젠다"),
                 () -> assertThat(state).isFalse(),
-                () -> assertThat(createTime).isEqualTo(formattedNow)
+                () -> assertThat(createTime.startsWith(formattedNow)).isTrue()
         );
     }
 

@@ -105,6 +105,16 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
         if (!dailyAgenda.getMember().getId().equals(currentUserId)) {
             throw new UnAuthorizedException("유저가 소유한 아젠다가 아닙니다.");
         }
+        //페이징 중복 확인
+        LocalDateTime createdAt = dailyAgenda.getCreatedAt();
+        LocalDateTime startOfDay = createdAt.toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = createdAt.toLocalDate().atTime(LocalTime.MAX);
+
+        if (dailyAgendaRepository.existsByPagingIdAndCreatedAtBetween(updateDailyAgendaRequestDto.getPagingId(), startOfDay, endOfDay)) {
+            throw new AlreadyPagingIdException("이미 등록된 페이징번호입니다");
+        }
+
+        dailyAgenda.updatePagingId(updateDailyAgendaRequestDto.getPagingId());
         dailyAgenda.setTodo(updateDailyAgendaRequestDto.getTodo());
         dailyAgenda.setState(updateDailyAgendaRequestDto.isState());
 
