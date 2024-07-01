@@ -110,7 +110,8 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
         LocalDateTime startOfDay = createdAt.toLocalDate().atStartOfDay();
         LocalDateTime endOfDay = createdAt.toLocalDate().atTime(LocalTime.MAX);
 
-        if (dailyAgendaRepository.existsByPagingIdAndCreatedAtBetween(updateDailyAgendaRequestDto.getPagingId(), startOfDay, endOfDay)) {
+        Optional<DailyAgenda> existingAgenda = dailyAgendaRepository.findByPagingIdAndCreatedAtBetween(updateDailyAgendaRequestDto.getPagingId(), startOfDay, endOfDay);
+        if (existingAgenda.isPresent() && !existingAgenda.get().getId().equals(updateDailyAgendaRequestDto.getAgendaId())) {
             throw new AlreadyPagingIdException("이미 등록된 페이징번호입니다");
         }
 
