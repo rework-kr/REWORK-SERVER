@@ -53,6 +53,7 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
         }
 
         List<ReadDetailDailyAgendaResponseDto> result = agendaList.stream()
+                .sorted((a1, a2) -> Long.compare(a2.getPagingId(), a1.getPagingId()))
                 .map(agenda -> new ReadDetailDailyAgendaResponseDto(agenda.getId(), agenda.getTodo(), agenda.isState(), agenda.getPagingId())).toList();
 
         return new ReadDailyAgendaResponseDto(result);
