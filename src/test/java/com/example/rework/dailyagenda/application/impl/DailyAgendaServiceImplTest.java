@@ -106,12 +106,12 @@ class DailyAgendaServiceImplTest {
         DailyAgendaResponseDto.ReadDailyAgendaResponseDto readDailyAgendaResponseDto = dailyAgendaService.readDailyAgenda(year, month, day, state, null);
 
         // then
-        Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(0).getPagingId()).isEqualTo(1L);
-        Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(0).getTodo()).isEqualTo("test1");
+        Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(0).getPagingId()).isEqualTo(2L);
+        Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(0).getTodo()).isEqualTo("test2");
         Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(0).isState()).isFalse();
 
-        Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(1).getPagingId()).isEqualTo(2L);
-        Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(1).getTodo()).isEqualTo("test2");
+        Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(1).getPagingId()).isEqualTo(1L);
+        Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(1).getTodo()).isEqualTo("test1");
         Assertions.assertThat(readDailyAgendaResponseDto.getAgendaList().get(1).isState()).isFalse();
     }
 
