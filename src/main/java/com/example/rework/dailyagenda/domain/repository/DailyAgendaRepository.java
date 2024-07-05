@@ -14,5 +14,5 @@ public interface DailyAgendaRepository extends JpaRepository<DailyAgenda, Long> 
 
     Optional<DailyAgenda> findByPagingIdAndCreatedAtBetween(Long pagingId, LocalDateTime start, LocalDateTime end);
 
-    boolean existsByPagingIdAndCreatedAtBetween(Long pagingId, LocalDateTime startOfDay, LocalDateTime endOfDay);
+    boolean existsByMemberIdAndPagingIdAndCreatedAtBetween(Long memberId, Long pagingId, LocalDateTime createdAt, LocalDateTime createdAt2);
 }
