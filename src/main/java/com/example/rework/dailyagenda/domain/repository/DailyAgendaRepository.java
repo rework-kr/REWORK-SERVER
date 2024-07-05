@@ -12,7 +12,7 @@ public interface DailyAgendaRepository extends JpaRepository<DailyAgenda, Long> 
 
     List<DailyAgenda> findByMemberIdAndCreatedAtBetweenAndState(Long memberId, LocalDateTime startOfDay, LocalDateTime endOfDay, boolean state);
 
-    Optional<DailyAgenda> findByPagingIdAndCreatedAtBetween(Long pagingId, LocalDateTime start, LocalDateTime end);
+//    Optional<DailyAgenda> findByMemberIdPagingIdAndCreatedAtBetween(Long memberId, Long pagingId, LocalDateTime start, LocalDateTime end);
 
     boolean existsByMemberIdAndPagingIdAndCreatedAtBetween(Long memberId, Long pagingId, LocalDateTime createdAt, LocalDateTime createdAt2);
 }
