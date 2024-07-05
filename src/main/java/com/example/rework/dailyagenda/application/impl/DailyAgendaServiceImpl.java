@@ -68,7 +68,7 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
         LocalDateTime startOfDay = createDailyAgendaRequestDto.getCreatedAt().atStartOfDay();
         LocalDateTime endOfDay = createDailyAgendaRequestDto.getCreatedAt().atTime(LocalTime.MAX);
 
-        if (dailyAgendaRepository.existsByMemberIdAndPagingIdAndCreatedAtBetween(currentUserId,createDailyAgendaRequestDto.getPagingId(), startOfDay, endOfDay)) {
+        if (dailyAgendaRepository.existsByMemberIdAndPagingIdAndCreatedAtBetween(currentUserId, createDailyAgendaRequestDto.getPagingId(), startOfDay, endOfDay)) {
             throw new AlreadyPagingIdException("이미 등록된 페이징번호입니다");
         }
 
@@ -111,11 +111,14 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
         LocalDateTime startOfDay = createdAt.toLocalDate().atStartOfDay();
         LocalDateTime endOfDay = createdAt.toLocalDate().atTime(LocalTime.MAX);
 
-        Optional<DailyAgenda> existingAgenda = dailyAgendaRepository.findByPagingIdAndCreatedAtBetween(updateDailyAgendaRequestDto.getPagingId(), startOfDay, endOfDay);
-        if (existingAgenda.isPresent() && !existingAgenda.get().getId().equals(updateDailyAgendaRequestDto.getAgendaId())) {
+//        Optional<DailyAgenda> existingAgenda = dailyAgendaRepository.findByMemberIdPagingIdAndCreatedAtBetween(currentUserId, updateDailyAgendaRequestDto.getPagingId(), startOfDay, endOfDay);
+//        if (existingAgenda.isPresent() && !existingAgenda.get().getId().equals(updateDailyAgendaRequestDto.getAgendaId())) {
+//            throw new AlreadyPagingIdException("이미 등록된 페이징번호입니다");
+//        }
+        if (!dailyAgenda.getPagingId().equals(updateDailyAgendaRequestDto.getPagingId()) &&
+                dailyAgendaRepository.existsByMemberIdAndPagingIdAndCreatedAtBetween(currentUserId, updateDailyAgendaRequestDto.getPagingId(), startOfDay, endOfDay)) {
             throw new AlreadyPagingIdException("이미 등록된 페이징번호입니다");
         }
-
         dailyAgenda.updatePagingId(updateDailyAgendaRequestDto.getPagingId());
         dailyAgenda.setTodo(updateDailyAgendaRequestDto.getTodo());
         dailyAgenda.setState(updateDailyAgendaRequestDto.isState());
