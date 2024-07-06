@@ -219,10 +219,10 @@ public class DailyAgendaServiceImpl implements DailyAgendaService {
         List<DailyAgenda> dailyAgendaList = dailyAgendaRepository.findByMemberIdAndCreatedAtBetween(currentUserId, startOfDay, endOfDay);
 
         // 현재 유저가 소유한 아젠다가 아닌 경우 예외 처리
-        dailyAgendaList.stream().filter(agenda -> !agenda.getMember().getId().equals(currentUserId))
-                .forEach(agenda -> {
-                    throw new UnAuthorizedException("유저가 소유한 아젠다가 아닙니다.");
-                });
+//        dailyAgendaList.stream().filter(agenda -> !agenda.getMember().getId().equals(currentUserId))
+//                .forEach(agenda -> {
+//                    throw new UnAuthorizedException("유저가 소유한 아젠다가 아닙니다.");
+//                });
 
         // 아젠다 아이디로 아젠다를 찾아 pagingId를 업데이트
         for (UpdateDailyAgendaListRequestDto updateDailyAgendaRequestDtos : updateDailyAgendaListRequestDtoList) {
